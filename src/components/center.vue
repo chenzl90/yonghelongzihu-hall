@@ -1,5 +1,5 @@
 <template>
-  <section class="tower-model">
+  <section id="tower-model" class="tower-model">
     <!--房间数及入住率-->
     <span class="room-occupancy">
       <span style="margin-right:30px;font-size:48px;color:#0febff;">52%</span>入住<br>
@@ -27,12 +27,72 @@
     </span>
     <span class="room-total" style="left:2752px;top:1563px;line-height: 1.4;">
       剩余停车位<br><span style="font-size:48px;color:#0febff;">1200/</span><span style="font-size:32px;color:#fff;">3200</span>
-      </span>
+    </span>
   </section>
 </template>
 <script>
+  import Elevator from '@/js/Elevator.js'
+  import FloorState from  '@/js/floor-state.js'
   export default {
-
+    data: function () {
+      return {
+        elevatorPositions: [{
+            top: 432,
+            left: 747,
+            doorSide:'Right'
+          },
+          {
+            top: 238,
+            left: 1540,
+            doorSide:'Left'
+          },
+          {
+            top: 246,
+            left: 1761,
+            doorSide:'Right'
+          },
+          {
+            top: 174,
+            left: 2272,
+            doorSide:'Left'
+          },
+          {
+            top:398,
+            left: 2522,
+            doorSide:'Left'
+          }
+        ]
+      }
+    },
+    mounted: function () {
+      this.init();
+    },
+    methods: {
+      init: function () {
+        let that=this;
+        this.$nextTick().then(function(){
+          that.addElevators();
+          that.addFloorsState();
+        })
+      },
+      addElevators: function () {
+        this.elevatorPositions.forEach(function (value) {
+          let elevator=new Elevator({
+            container: '#tower-model',
+            top:value.top,
+            left:value.left,
+            doorSide:value.doorSide
+          });
+          elevator.init();
+        })
+      },
+      addFloorsState:function(){
+        let floorState=new FloorState({
+          container:'#tower-model'
+        });
+        floorState.setTempreture();
+      }
+    }
   }
 
 </script>
