@@ -1,7 +1,7 @@
-import lowerUrl from '@/images/towera-floor-state-lower.png'
-import higherUrl from '@/images/towera-floor-state-higher.png'
-import lowerUrlb from '@/images/towerb-floor-state-higher.png'
-import higherUrlb from '@/images/towerb-floor-state-higher.png'
+import lowerUrl from '@/../static/images/towera-floor-state-lower.png'
+import higherUrl from '@/../static/images/towera-floor-state-higher.png'
+import lowerUrlb from '@/../static/images/towerb-floor-state-higher.png'
+import higherUrlb from '@/../static/images/towerb-floor-state-higher.png'
 const towers = [{
     name: 'A塔',
     floors: [3, 6],
@@ -62,10 +62,6 @@ FloorState.prototype.addState = function (option, state) {
     container.removeChild(element)
   }, 3000);
 };
-FloorState.prototype.alarm = function (message, state) {
-
-  document.querySelector(this.container).appendChild(this.element);
-};
 FloorState.prototype.setTempreture = function () {
   let that = this;
   towers.forEach(function (value) {
@@ -73,7 +69,7 @@ FloorState.prototype.setTempreture = function () {
       let tempreture = Math.ceil(Math.random() * 40);
       let room = Math.ceil(Math.random() * value.perFloorRooms);
       if (tempreture < that.tempretureRange[0]) {
-        if (Math.random() < 0.1) {
+        if (Math.random() < 0.3) {
           that.addState({
             position: `${value.name}${that.beauty(i)}${that.beauty(room)}`,
             tempreture: tempreture,
@@ -82,7 +78,7 @@ FloorState.prototype.setTempreture = function () {
           }, true);
         }
       } else if (tempreture > that.tempretureRange[1]) {
-        if (Math.random() < 0.1) {
+        if (Math.random() < 0.3) {
           that.addState({
             position: `${value.name}${that.beauty(i)}${that.beauty(room)}`,
             tempreture: tempreture,

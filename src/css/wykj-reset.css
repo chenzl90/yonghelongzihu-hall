@@ -438,7 +438,7 @@ a {
 .header {
     height:192px;
     background-size:9519px 160px;
-    background-image:url('./../images/title.png');
+    background-image:url('/static/images/title.png');
     background-repeat: no-repeat;
     background-position:center bottom;
 }
@@ -448,7 +448,7 @@ a {
     height:2160px;
     margin:0 auto;
     background-size: 3479px 1968px;
-    background-image:url('./../images/building.png');
+    background-image:url('/static/images/building.png');
     background-repeat: no-repeat;
     background-position:center top;
 }
