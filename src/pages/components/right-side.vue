@@ -1,7 +1,7 @@
 <template>
     <ul class="layout-float" style="width:2820px;padding:0 76px;">
         <li class="layout-fl device-alarm">
-            <device-alarm-time></device-alarm-time>
+            <device-alarm-time :option="option4"></device-alarm-time>
             <alarm-statistics :option="option" style="margin-top:40px;"></alarm-statistics>
         </li>
         <li class="layout-fr face-analysis">
@@ -17,13 +17,15 @@
 import {
     alarmStatistics,
     powerConsumeStatistics,
-    powerConsumeStatisticsTime} from '@/data/data.js'
+    powerConsumeStatisticsTime,
+    deviceAlarmTime} from '@/data/data.js'
 export default {
     data:function(){
         return {
             option:alarmStatistics,
             option2:powerConsumeStatistics,
-            option3:powerConsumeStatisticsTime
+            option3:powerConsumeStatisticsTime,
+            option4:deviceAlarmTime
         }
     },
     components:{

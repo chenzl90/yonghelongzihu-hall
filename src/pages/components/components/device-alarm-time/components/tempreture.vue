@@ -33,7 +33,7 @@ export default {
             let tempreture=this.tempreture;
             if(tempreture<18){
                 return 'lower'
-            }else if(tempreture<25){
+            }else if(tempreture<28){
                 return 'normal'
             }else{
                 return 'higher'

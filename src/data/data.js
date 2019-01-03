@@ -284,8 +284,27 @@ const powerConsumeStatisticsTime={
         }
     ]
 };
+const deviceAlarmTime=[
+    {
+        position:'A塔-29层',
+        tempreture:23
+    },
+    {
+        position:'A塔-05层',
+        tempreture:19
+    },
+    {
+        position:'A塔-12层',
+        tempreture:24
+    },
+    {
+        position:'B塔-33层',
+        tempreture:25
+    }
+];
 export {
     alarmStatistics,
     powerConsumeStatistics,
-    powerConsumeStatisticsTime
+    powerConsumeStatisticsTime,
+    deviceAlarmTime
 }
