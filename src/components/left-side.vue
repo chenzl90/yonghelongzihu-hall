@@ -77,15 +77,15 @@
             </div>
             <div class="finance-title">
               日均营收
-              <span>2000 元</span>
+              <span class="income-all-color">2000 元</span>
             </div>
           </section>
           <section class="income income-today">
             <div class="sub-title">
               当日营收
-              <span class="finance-title">(和昨日同时段的同比)</span>
+              <span class="little-title">(和昨日同时段的同比)</span>
             </div>
-            <div class="finance-content">
+            <div class="income-park">
               200,000
               <span class="little-font">元</span>
             </div>
@@ -97,21 +97,21 @@
           <section id="income"></section>
           <section class="park-space">
             <div class="park-title">
-              <span class="finance-title">当前空余车位</span>
-              <span class="txt-font">1200</span>
-              <span>/ 3200</span>
+              <span class="txt-font14">当前空余车位</span>
+              <span class="txt-font52">1200</span>
+              <span class="txt-font20">/ 3200</span>
             </div>
             <section class="car-flow">
               <div class="flow-today">
-                <span class="finance-title">今日车流量</span>
-                <span>3200</span>
+                <span class="txt-font16">今日车流量</span>
+                <span class="txt-font32">3200</span>
               </div>
               <div class="flow-progress flow-today-progress"></div>
             </section>
             <section class="car-flow">
               <div class="flow-average">
-                <span class="finance-title">日均车流量</span>
-                <span>3200</span>
+                <span class="txt-font16">日均车流量</span>
+                <span class="txt-font32">3200</span>
               </div>
               <div class="flow-progress flow-today-progress"></div>
             </section>
@@ -356,21 +356,34 @@ export default {
       let parkGraph = this.$echarts.init(document.getElementById("park-space"));
 
       parkGraph.setOption({
-        tooltip: {
-          formatter: "{a} <br/>{b} : {c}%"
-        },
-        toolbox: {
-          feature: {
-            restore: {},
-            saveAsImage: {}
-          }
+        grid: {
+          top: "0%",
+          left: "0%",
+          right: "0%"
         },
         series: [
           {
-            name: "业务指标",
+            name: "车位占有率",
             type: "gauge",
-            detail: { formatter: "{value}%" },
-            data: [{ value: 50, name: "完成率" }]
+            radius: "100%",
+            axisLine: {
+              lineStyle: {
+                color: [[0.48, "#4C82FF"], [1, "#152336"]],
+                width: 0
+              }
+            },
+            axisLabel: { show: false },
+            splitLine: { length: 25, lineStyle: { width: 4 } },
+            axisTick: { length: 16, splitNumber: 3, lineStyle: { width: 4 } },
+            pointer: { show: false },
+            title: { color: "#ABB7CC", fontSize: 18 },
+            detail: {
+              color: "#4C82FF",
+              fontWeight: "bolder",
+              fontSize: 64,
+              formatter: "{value}%"
+            },
+            data: [{ value: 48, name: "车位占有率" }]
           }
         ]
       });
@@ -382,15 +395,42 @@ export default {
       incomeGraph.setOption({
         xAxis: {
           type: "category",
-          data: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
+          axisLine: {
+            symbol: ["none", "arrow"],
+            lineStyle: { color: "#0FEBFF" }
+          },
+          axisTick: { show: false },
+          axisLabel: { margin: 24, color: "#FFFFFF", fontSize: 16 },
+          boundaryGap: ["20%", "30%"],
+          data: ["12.14", "12.15", "12.16", "12.17", "12.18", "12.19", "12.20"]
         },
         yAxis: {
-          type: "value"
+          type: "value",
+          max: 10000,
+          nameTextStyle: {
+            color: "#ABB7CC",
+            fontSize: 14,
+            align: "left",
+            verticalAlign: "bottom"
+          },
+          axisLine: { show: false },
+          axisTick: { show: false },
+          axisLabel: { margin: 30, color: "#FFFFFF", fontSize: 16 },
+          splitLine: { lineStyle: { color: "#1C5055" } }
         },
         series: [
           {
-            data: [120, 200, 150, 80, 70, 110, 130],
-            type: "bar"
+            data: [4400, 4400, 7800, 6040, 7800, 2800, 4400],
+            type: "bar",
+            itemStyle: {
+              normal: {
+                color: new this.$echarts.graphic.LinearGradient(0, 1, 0, 0, [
+                  { offset: 0, color: "#121217" },
+                  { offset: 1, color: "#3570EA" }
+                ])
+              }
+            },
+            barWidth: 18
           }
         ]
       });
@@ -412,7 +452,7 @@ export default {
   padding-left: 80px;
   padding-right: 90px;
   margin-right: 42px;
-  background: url(/images/left-bg.png) no-repeat 100%;
+  background: url(static/images/left-bg.png) no-repeat 100%;
   background-size: cover;
 }
 .title {
@@ -428,7 +468,7 @@ export default {
   font-size: 24px;
   font-weight: 500;
   color: #ffffff;
-  line-height: 42px;
+  line-height: 24px;
 }
 .finance-wrapper {
   display: flex;
@@ -500,16 +540,44 @@ export default {
   display: flex;
   justify-content: space-between;
 }
+.park-left {
+  width: 250px;
+  flex-basis: 250px;
+}
 .park-right {
   flex: 1;
 }
+.income {
+  height: 164px;
+  margin-bottom: 42px;
+}
+.income-all {
+  border-bottom: 1px solid #313133;
+}
 .income .sub-title {
-  padding-bottom: 0;
+  padding-bottom: 28px;
+}
+.income-all-color {
+  color: #fefefe;
+}
+.income-increase {
+  font-size: 20px;
+  font-weight: 500;
+  color: #e5464f;
+  line-height: 20px;
 }
 .income-park {
+  padding-bottom: 20px;
   font-size: 32px;
   font-weight: bold;
   color: #0fe4f8;
+  line-height: 32px;
+}
+.little-title {
+  font-size: 14px;
+  font-weight: 500;
+  color: #abb7cc;
+  line-height: 14px;
 }
 #park-space {
   height: 288px;
@@ -517,10 +585,59 @@ export default {
 #income {
   height: 320px;
 }
-
 .flow-progress {
   height: 8px;
   background: #152336;
   border-radius: 4px;
+}
+.txt-font14 {
+  font-size: 14px;
+  font-weight: 400;
+  color: #abb7cc;
+  line-height: 14px;
+}
+.txt-font52 {
+  font-size: 52px;
+  font-weight: 800;
+  color: #0fe4f8;
+  line-height: 52px;
+}
+.txt-font20 {
+  font-size: 20px;
+  font-weight: 400;
+  color: #ffffff;
+  line-height: 20px;
+}
+.txt-font16 {
+  font-size: 16px;
+  font-weight: 400;
+  color: #abb7cc;
+  line-height: 16px;
+}
+.txt-font32 {
+  font-size: 32px;
+  font-weight: bold;
+  color: #ffffff;
+  line-height: 32px;
+}
+.park-title {
+  padding-bottom: 22px;
+  margin-bottom: 30px;
+  border-bottom: 1px solid #313133;
+}
+.park-title .txt-font14 {
+  margin-right: 28px;
+}
+.car-flow {
+  display: flex;
+  flex-direction: column;
+}
+.flow-today,
+.flow-average {
+  align-self: flex-end;
+}
+.flow-today span:first-child,
+.flow-average span:first-child {
+  margin-right: 12px;
 }
 </style>
