@@ -1,10 +1,11 @@
 import lowerUrl from '@/../static/images/towera-floor-state-lower.png'
 import higherUrl from '@/../static/images/towera-floor-state-higher.png'
 import lowerUrlb from '@/../static/images/towerb-floor-state-higher.png'
-import higherUrlb from '@/../static/images/towerb-floor-state-higher.png'
+import higherUrlb from '@/../static/images/towerb-floor-state-lower.png'
 const towers = [{
     name: 'A塔',
-    floors: [3, 6],
+    frequency:0.3,
+    floors: [3, 7],
     floorHeight:96,
     perFloorRooms: 60,
     state: {
@@ -17,7 +18,8 @@ const towers = [{
   },
   {
     name: 'B塔',
-    floors: [3, 6],
+    frequency:0.1,
+    floors: [4, 8],
     floorHeight:96,
     perFloorRooms: 60,
     state: {
@@ -69,7 +71,7 @@ FloorState.prototype.setTempreture = function () {
       let tempreture = Math.ceil(Math.random() * 40);
       let room = Math.ceil(Math.random() * value.perFloorRooms);
       if (tempreture < that.tempretureRange[0]) {
-        if (Math.random() < 0.3) {
+        if (Math.random()<value.frequency) {
           that.addState({
             position: `${value.name}${that.beauty(i)}${that.beauty(room)}`,
             tempreture: tempreture,
@@ -78,11 +80,11 @@ FloorState.prototype.setTempreture = function () {
           }, true);
         }
       } else if (tempreture > that.tempretureRange[1]) {
-        if (Math.random() < 0.3) {
+        if (Math.random()<value.frequency) {
           that.addState({
             position: `${value.name}${that.beauty(i)}${that.beauty(room)}`,
             tempreture: tempreture,
-            displacement: (i - 1) * value.floorHeight,
+            displacement: (i- 1) * value.floorHeight,
             state: value.state
           }, false);
         }

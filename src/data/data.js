@@ -80,6 +80,9 @@ const alarmStatistics={
         data: ['1','2','3','4','5','6','7','8','9','10','11','12']
     },
     yAxis: {
+        axisLabel:{
+            showMinLabel:false
+        },
         splitLine:{
             lineStyle:{
                 color:'#1c5055'
@@ -148,6 +151,10 @@ const powerConsumeStatistics={
     tooltip: {
         trigger: 'item',
         formatter: "{a} <br/>{b}: {c} ({d}%)"
+    },
+    textStyle:{
+        color:'#fff',
+        fontSize:12
     },
     color:['#614b99','#5c7dcc','#6694ff','#39538f','#3d4966','#2667ff'],
     legend: {
@@ -261,6 +268,9 @@ const powerConsumeStatisticsTime={
         nameTextStyle:{
             fontSize:12,
             color:'#abb7cc'
+        },
+        axisLabel:{
+            showMinLabel:false
         },
         splitLine:{
             lineStyle:{
