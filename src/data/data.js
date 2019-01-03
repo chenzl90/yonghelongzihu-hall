@@ -5,16 +5,92 @@ const alarmStatistics={
     grid: {
         top:'2%',
         left: '0%',
-        right: '0%',
-        bottom: '3%',
+        right: '1%',
+        bottom: '10%',
         containLabel: true
     },
+    legend:{
+        show:true,
+        bottom:0,
+        textStyle:{
+            color:'#fff',
+            fontSize:12
+        },
+        data:[
+            {
+                name:'强电设备',
+                icon:'pin'
+            },
+            {
+                name:'弱电设备',
+                icon:'pin'
+            },
+            {
+                name:'通暖空调',
+                icon:'pin'
+            },
+            {
+                name:'给水排点设备',
+                icon:'pin'
+            },
+            {
+                name:'升降设备',
+                icon:'pin'
+            },
+            {
+                name:'消防设备',
+                icon:'pin'
+            },
+            {
+                name:'电梯设备',
+                icon:'pin'
+            },
+            {
+                name:'其他设备',
+                icon:'pin'
+            }
+        ]
+    },
+    color:['#614b99','#3d4966','#67738f','#39538f','#5c7dcc','#7d5699','#614b99','#887acc'],
+    textStyle:{
+        color:'#fff',
+        fontSize:18
+    },
     xAxis: {
+        name:'(月份)',
+        nameLocation:'middle',
+        nameTextStyle:{
+            fontSize:12,
+            color:'#abb7cc',
+            verticalAlign:'bottom'
+        },
+        axisLabel:{
+            align:'right'
+        },
+        axisLine:{
+            lineStyle:{
+                color:'#0febff'
+            }
+        },
+        axisTick: {
+            show: false
+        },
         type: 'category',
         boundaryGap: false,
-        data: ['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月']
+        data: ['1','2','3','4','5','6','7','8','9','10','11','12']
     },
     yAxis: {
+        splitLine:{
+            lineStyle:{
+                color:'#1c5055'
+            }
+        },
+        axisLine:{
+            show:false
+        },
+        axisTick: {
+            show: false
+        },
         type: 'value'
     },
     series: [
@@ -73,18 +149,52 @@ const powerConsumeStatistics={
         trigger: 'item',
         formatter: "{a} <br/>{b}: {c} ({d}%)"
     },
+    color:['#614b99','#5c7dcc','#6694ff','#39538f','#3d4966','#2667ff'],
+    legend: {
+        left:0,
+        textStyle:{
+            color:'#fff',
+            fontSize:12
+        },
+        data:[
+            {
+                name:'公共区域',
+                icon:'pin'
+            },
+            {
+                name:'非公共区域',
+                icon:'pin'
+            },
+            {
+                name:'能源控制器',
+                icon:'pin'
+            },
+            {
+                name:'用水量',
+                icon:'pin'
+            },
+            {
+                name:'用电量',
+                icon:'pin'
+            },
+            {
+                name:'天然气用量',
+                icon:'pin'
+            }
+        ]
+    },
     series: [
         {
             type:'pie',
-            name:'当前数据',
-            selectedMode: 'single',
-            radius: [0, '30%'],
-
             label: {
                 normal: {
+                    formatter: '{b} {d}%',
                     position: 'inner'
                 }
             },
+            name:'当前数据',
+            selectedMode: 'single',
+            radius: [0, '40%'],
             labelLine: {
                 normal: {
                     show: false
@@ -97,13 +207,18 @@ const powerConsumeStatistics={
         },
         {
             type:'pie',
+            label: {
+                normal: {
+                    formatter: '{b} {d}%'
+                }
+            },
             name:'当前数据',
-            radius: ['40%', '55%'],
+            radius: ['60%', '75%'],
             data:[
                 {value:335, name:'能源控制器'},
                 {value:310, name:'用水量'},
                 {value:234, name:'用电量'},
-                {value:135, name:'天然气用量'}
+                {value:635, name:'天然气用量'}
             ]
         }
     ]
@@ -112,19 +227,52 @@ const powerConsumeStatisticsTime={
     tooltip: {
         trigger: 'axis'
     },
+    textStyle:{
+        color:'#fff',
+        fontSize:18
+    },
+    color:['#6694ff'],
     grid: {
-        top:'2%',
-        left: '0%',
-        right: '0%',
+        top:'8%',
+        left: '1%',
+        right: '1%',
         bottom: '3%',
         containLabel: true
     },
     xAxis: {
+        axisLabel:{
+            align:'right'
+        },
+        axisLine:{
+            lineStyle:{
+                color:'#0febff'
+            }
+        },
+        axisTick: {
+            show: false
+        },
         type: 'category',
         boundaryGap: false,
-        data: ['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月']
+        data: ['00:00','03:00','06:00','09:00','12:00','15:00','18:00','21:00','24:00']
     },
     yAxis: {
+        name:'(kw/h)',
+        nameLocation:'end',
+        nameTextStyle:{
+            fontSize:12,
+            color:'#abb7cc'
+        },
+        splitLine:{
+            lineStyle:{
+                color:'#1c5055'
+            }
+        },
+        axisLine:{
+            show:false
+        },
+        axisTick: {
+            show: false
+        },
         type: 'value'
     },
     series: [
@@ -132,7 +280,7 @@ const powerConsumeStatisticsTime={
             name:'强电设备',
             type:'line',
             stack: '总量',
-            data:[100, 132, 101, 134, 90, 230, 210,101, 134, 90, 230, 210]
+            data:[100, 132, 101, 134, 90, 230, 210,101, 134]
         }
     ]
 };
