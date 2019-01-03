@@ -3,12 +3,14 @@
     <h1 class="header"><span class="glb-for-screen">微羽物业大数据运营平台</span></h1>
     <ul class="layout-tr">
       <li>
-          
+          <left-side></left-side>
       </li>
       <li class="layout-td">
           <model-center></model-center>
       </li>
-      <li></li>
+      <li>
+        <right-side></right-side>
+      </li>
     </ul>
   </article>
 </template>
@@ -16,9 +18,14 @@
   export default {
       components:{
          modelCenter:function(){
-             return import('@/components/center.vue')
-         }  
+             return import('@/pages/components/center.vue')
+         },
+         leftSide:function(){
+             return import('@/components/left-side.vue')
+         },
+         rightSide:function(){
+             return import('@/pages/components/right-side.vue')
+         }   
       }
   }
-
 </script>
