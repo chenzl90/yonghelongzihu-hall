@@ -32,34 +32,34 @@
 </template>
 <script>
   import Elevator from '@/js/Elevator.js'
-  import FloorState from  '@/js/floor-state.js'
+  import FloorState from '@/js/floor-state.js'
   export default {
     data: function () {
       return {
         elevatorPositions: [{
             top: 432,
             left: 747,
-            doorSide:'Right'
+            doorSide: 'Right'
           },
           {
             top: 238,
             left: 1540,
-            doorSide:'Left'
+            doorSide: 'Left'
           },
           {
             top: 246,
             left: 1761,
-            doorSide:'Right'
+            doorSide: 'Right'
           },
           {
             top: 174,
             left: 2272,
-            doorSide:'Left'
+            doorSide: 'Left'
           },
           {
-            top:398,
+            top: 398,
             left: 2522,
-            doorSide:'Left'
+            doorSide: 'Left'
           }
         ]
       }
@@ -69,26 +69,26 @@
     },
     methods: {
       init: function () {
-        let that=this;
-        this.$nextTick().then(function(){
+        let that = this;
+        this.$nextTick().then(function () {
           that.addElevators();
           that.addFloorsState();
         })
       },
       addElevators: function () {
         this.elevatorPositions.forEach(function (value) {
-          let elevator=new Elevator({
+          let elevator = new Elevator({
             container: '#tower-model',
-            top:value.top,
-            left:value.left,
-            doorSide:value.doorSide
+            top: value.top,
+            left: value.left,
+            doorSide: value.doorSide
           });
           elevator.init();
         })
       },
-      addFloorsState:function(){
-        let floorState=new FloorState({
-          container:'#tower-model'
+      addFloorsState: function () {
+        let floorState = new FloorState({
+          container: '#tower-model'
         });
         floorState.setTempreture();
       }
@@ -96,6 +96,41 @@
   }
 
 </script>
-<style>
+<style scoped>
+  .header {
+    height: 192px;
+    background-size: 9519px 160px;
+    background-image: url('/static/images/title.png');
+    background-repeat: no-repeat;
+    background-position: center bottom;
+  }
 
+  .tower-model {
+    position: relative;
+    width: 3479px;
+    height: 2160px;
+    margin: 0 auto;
+    background-size: 3479px 1968px;
+    background-image: url('/static/images/building.png');
+    background-repeat: no-repeat;
+    background-position: center top;
+  }
+
+  .room-occupancy {
+    position: absolute;
+    left: 80px;
+    top: 350px;
+    width: 240px;
+    height: 180px;
+    color: #fff;
+    font-size: 30px;
+  }
+
+  .room-total {
+    position: absolute;
+    left: 620px;
+    top: 468px;
+    font-size: 20px;
+    color: #fff;
+  }
 </style>
