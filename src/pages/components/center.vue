@@ -97,18 +97,10 @@
 
 </script>
 <style scoped>
-  .header {
-    height: 192px;
-    background-size: 9519px 160px;
-    background-image: url('/static/images/title.png');
-    background-repeat: no-repeat;
-    background-position: center bottom;
-  }
-
   .tower-model {
     position: relative;
     width: 3479px;
-    height: 2160px;
+    height:2050px;
     margin: 0 auto;
     background-size: 3479px 1968px;
     background-image: url('/static/images/building.png');

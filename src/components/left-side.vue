@@ -452,7 +452,7 @@ export default {
   padding-left: 80px;
   padding-right: 90px;
   margin-right: 42px;
-  background: url(static/images/left-bg.png) no-repeat 100%;
+  background: url(/static/images/left-bg.png) no-repeat 100%;
   background-size: cover;
 }
 .title {

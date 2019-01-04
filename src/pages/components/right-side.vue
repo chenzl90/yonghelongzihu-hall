@@ -1,12 +1,12 @@
 <template>
-    <ul class="layout-float" style="width:2820px;padding:0 76px;">
+    <ul class="layout-float" style="width:1318px;padding:0 76px;">
         <li class="layout-fl device-alarm">
             <device-alarm-time :option="option4"></device-alarm-time>
             <alarm-statistics :option="option" style="margin-top:40px;"></alarm-statistics>
         </li>
-        <li class="layout-fr face-analysis">
+        <!-- <li class="layout-fr face-analysis">
                 
-        </li>
+        </li> -->
         <li class="layout-fl power-consume-statistics">
             <power-consume-statistics :option="option2"></power-consume-statistics>
             <power-consume-statistics-time :option="option3"></power-consume-statistics-time>   
