@@ -20,7 +20,7 @@ html {
 
 body {
     position: relative;
-    min-width:9600px;
+    min-width:8000px;
     height: 100%;
     margin: 0 auto;
     padding: 0;
@@ -30,6 +30,8 @@ body {
     color: #333;
     background-color:#121217;
     word-break: break-all;
+    transform: scale(0.2);
+    transform-origin:left top;
 }
 
 body::after {

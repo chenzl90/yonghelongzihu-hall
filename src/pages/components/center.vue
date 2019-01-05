@@ -26,7 +26,9 @@
       <span style="margin-right:30px;font-size:48px;color:#126be7;">48%</span>空闲
     </span>
     <span class="room-total" style="left:2752px;top:1563px;line-height: 1.4;">
-      剩余停车位<br><span style="font-size:48px;color:#0febff;">1200/</span><span style="font-size:32px;color:#fff;">3200</span>
+      剩余停车位<br>
+      <span style="font-size:48px;color:#0febff;">0/</span>
+      <span style="font-size:32px;color:#fff;">3200</span>
     </span>
   </section>
 </template>
@@ -61,7 +63,9 @@
             left: 2522,
             doorSide: 'Left'
           }
-        ]
+        ],
+        remainParkingSpace:0,
+        remainParkingSpaceLoading:true
       }
     },
     mounted: function () {
@@ -97,18 +101,10 @@
 
 </script>
 <style scoped>
-  .header {
-    height: 192px;
-    background-size: 9519px 160px;
-    background-image: url('/static/images/title.png');
-    background-repeat: no-repeat;
-    background-position: center bottom;
-  }
-
   .tower-model {
     position: relative;
     width: 3479px;
-    height: 2160px;
+    height:2050px;
     margin: 0 auto;
     background-size: 3479px 1968px;
     background-image: url('/static/images/building.png');
