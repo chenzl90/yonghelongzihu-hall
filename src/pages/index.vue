@@ -5,7 +5,7 @@
         <model-time style="float:right;margin: 30px 70px 0 0;"></model-time>
     </h1> -->
     <ul class="layout-tr">
-      <li>
+      <li style="margin-top:-130px;">
         <left-side></left-side>
       </li>
       <li class="layout-td">

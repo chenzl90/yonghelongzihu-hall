@@ -4,10 +4,11 @@ import lowerUrlb from '@/../static/images/towerb-floor-state-higher.png'
 import higherUrlb from '@/../static/images/towerb-floor-state-lower.png'
 const towers = [{
     name: 'A塔',
-    frequency:0.3,
-    floors: [3, 7],
+    frequency:0.6,
+    floors: [5,9,11]||[1,11,11],
     floorHeight:96,
     perFloorRooms: 60,
+    duration:180000,
     state: {
       height: 128,
       width: 969,
@@ -18,10 +19,11 @@ const towers = [{
   },
   {
     name: 'B塔',
-    frequency:0.1,
-    floors: [4, 8],
+    frequency:0.6,
+    floors: [4,8,11]||[1,11,11],
     floorHeight:96,
     perFloorRooms: 60,
+    duration:180000,
     state: {
       height: 76,
       width: 696,
@@ -44,6 +46,7 @@ FloorState.prototype.addState = function (option, state) {
   let element = document.createElement('div');
   let container = document.querySelector(this.container);
   let stateConfig = option.state;
+  element.className='animation-fade-in';
   element.style.position = 'absolute';
   element.style.fontSize = '18px';
   element.style.color = '#fff';
@@ -62,7 +65,7 @@ FloorState.prototype.addState = function (option, state) {
   container.appendChild(element);
   setTimeout(function () {
     container.removeChild(element)
-  }, 3000);
+  }, option.duration);
 };
 FloorState.prototype.setTempreture = function () {
   let that = this;
@@ -72,28 +75,34 @@ FloorState.prototype.setTempreture = function () {
       let room = Math.ceil(Math.random() * value.perFloorRooms);
       if (tempreture < that.tempretureRange[0]) {
         if (Math.random()<value.frequency) {
-          that.addState({
-            position: `${value.name}${that.beauty(i)}${that.beauty(room)}`,
-            tempreture: tempreture,
-            displacement: (i - 1) * value.floorHeight,
-            state: value.state
-          }, true);
+          setTimeout(function(){
+            that.addState({
+              position: `${value.name}${that.beauty(i)}${that.beauty(room)}`,
+              tempreture: tempreture,
+              displacement: (value.floors[2]-i) * value.floorHeight,
+              state: value.state,
+              duration:value.duration
+            }, true);
+          },10000*Math.random())
         }
       } else if (tempreture > that.tempretureRange[1]) {
         if (Math.random()<value.frequency) {
-          that.addState({
-            position: `${value.name}${that.beauty(i)}${that.beauty(room)}`,
-            tempreture: tempreture,
-            displacement: (i- 1) * value.floorHeight,
-            state: value.state
-          }, false);
+          setTimeout(function(){
+            that.addState({
+              position: `${value.name}${that.beauty(i)}${that.beauty(room)}`,
+              tempreture: tempreture,
+              displacement: (value.floors[2]-i) * value.floorHeight,
+              state: value.state,
+              duration:value.duration
+            }, false);
+          },60000*Math.random())
         }
       }
     }
   })
   setTimeout(function () {
     that.setTempreture()
-  }, 10000)
+  }, 240000)
 };
 FloorState.prototype.beauty = function (value) {
   if (value < 10) {

@@ -26,6 +26,7 @@ function Elevator(option) {
   element.style.backgroundColor = this.color;
   element.style[`border${this.doorSide}`] = `6px solid ${this.doorStyle}`;
   this.element = element;
+  this.preFloor=0;
   this.element.addEventListener('transitionend', function () {
     that.clear();
   }, false)
@@ -47,9 +48,12 @@ Elevator.prototype.loading = function () {
   }
 };
 Elevator.prototype.animation = function () {
-  let displacement = Math.ceil(Math.random() * this.floors) * this.height;
-  let time = Math.sqrt(Math.sqrt(displacement));
+  let currentFloor=Math.ceil(Math.random() * this.floors);
+  let floors=Math.abs(currentFloor-this.preFloor);
+  let displacement =  currentFloor* this.height;
+  let time = floors;
   let that = this;
+  this.preFloor=currentFloor;
   this.loading();
   this.element.style.transition = `transform ${Math.ceil(time*1000)}ms cubic-bezier(0.32, 0.01, 0.57, 1)`;
   this.element.style.transform = `translateY(${displacement}px)`;
