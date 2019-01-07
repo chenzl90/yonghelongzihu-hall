@@ -1,15 +1,15 @@
 <template>
     <ul class="layout-float" style="width:1318px;padding:0 76px;">
         <li class="layout-fl device-alarm">
-            <device-alarm-time :option="option4"></device-alarm-time>
-            <alarm-statistics :option="option" style="margin-top:40px;"></alarm-statistics>
+            <device-alarm-time :option="deviceAlarmTime"></device-alarm-time>
+            <alarm-statistics :option="alarmStatistics" style="margin-top:40px;"></alarm-statistics>
         </li>
         <!-- <li class="layout-fr face-analysis">
                 
         </li> -->
         <li class="layout-fl power-consume-statistics">
-            <power-consume-statistics :option="option2"></power-consume-statistics>
-            <power-consume-statistics-time :option="option3"></power-consume-statistics-time>   
+            <power-consume-statistics :option="powerConsumeStatistics"></power-consume-statistics>
+            <power-consume-statistics-time :option="powerConsumeStatisticsTime"></power-consume-statistics-time>   
         </li>
     </ul>
 </template>
@@ -22,10 +22,10 @@ import {
 export default {
     data:function(){
         return {
-            option:alarmStatistics,
-            option2:powerConsumeStatistics,
-            option3:powerConsumeStatisticsTime,
-            option4:deviceAlarmTime
+            alarmStatistics:alarmStatistics,
+            powerConsumeStatistics:powerConsumeStatistics,
+            powerConsumeStatisticsTime:powerConsumeStatisticsTime,
+            deviceAlarmTime:deviceAlarmTime
         }
     },
     components:{

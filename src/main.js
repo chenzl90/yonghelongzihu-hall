@@ -25,6 +25,11 @@ Vue.component('model-loading',loading);
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
+  data:function(){
+    return {
+      parkingSpace:[]
+    }
+  },
   router,
   components: { App },
   template: '<App/>'
