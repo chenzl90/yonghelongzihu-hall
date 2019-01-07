@@ -21,7 +21,9 @@ Vue.component('model-loading',loading);
 new Vue({
   el: '#app',
   data:function(){
-    parkingSpace:[]
+    return {
+      parkingSpace:[]
+    }
   },
   router,
   components: { App },
