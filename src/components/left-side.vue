@@ -9,38 +9,42 @@
             <div class="finance-content-left">
               <div class="finance-title">上月收费总额</div>
               <div class="finance-content">
-                200,000
+                {{LastMonthTotalAmount}}
                 <span class="little-font">元</span>
               </div>
             </div>
             <div class="finance-content-right">
               <div class="finance-title">上月收缴率</div>
               <div class="finance-content">
-                52
+                {{LastMonthFeeRate}}
                 <span class="little-font">%</span>
               </div>
             </div>
           </div>
-          <div class="finance-progress finance-progress-month"></div>
+          <div class="finance-progress">
+            <div class="finance-progress-month" v-bind:style="{width: LastMonthFeeRate + '%' }"></div>
+          </div>
         </section>
         <section class="finance-wrapper-right">
           <div class="fix-clear">
             <div class="finance-content-left">
               <div class="finance-title">本年收费总额</div>
               <div class="finance-content">
-                342,000,320
+                {{YearTotalAmount}}
                 <span class="little-font">元</span>
               </div>
             </div>
             <div class="finance-content-right">
               <div class="finance-title">总收缴率</div>
               <div class="finance-content">
-                20
+                {{YearFeeRate}}
                 <span class="little-font">%</span>
               </div>
             </div>
           </div>
-          <div class="finance-progress finance-progress-all"></div>
+          <div class="finance-progress">
+            <div class="finance-progress-all" v-bind:style="{width: YearFeeRate + '%' }"></div>
+          </div>
         </section>
       </section>
       <div class="sub-title">月度收费统计</div>
@@ -100,22 +104,28 @@
         <section class="park-space">
           <div class="park-title">
             <span class="txt-font14">当前空余车位</span>
-            <span class="txt-font52">1200</span>
+            <span class="txt-font52">{{parkleftedNum}}</span>
             <span class="txt-font20">/ 3200</span>
           </div>
           <section class="car-flow">
             <div class="flow-today">
               <span class="txt-font16">今日车流量</span>
-              <span class="txt-font32">3200</span>
+              <span class="txt-font32">{{flowNumToday}}</span>
             </div>
-            <div class="flow-progress flow-progress-today"></div>
+            <div class="flow-progress">
+              <div class="flow-icon" v-bind:style="{left: flowRateToday }"></div>
+              <div class="flow-progress-today" v-bind:style="{width: flowRateToday }"></div>
+            </div>
           </section>
           <section class="car-flow">
             <div class="flow-average">
               <span class="txt-font16">日均车流量</span>
-              <span class="txt-font32">2000</span>
+              <span class="txt-font32">{{flowNumAverage}}</span>
             </div>
-            <div class="flow-progress flow-progress-average"></div>
+            <div class="flow-progress">
+              <div class="flow-icon" v-bind:style="{left: flowRateAverage}"></div>
+              <div class="flow-progress-average" v-bind:style="{width: flowRateAverage }"></div>
+            </div>
           </section>
         </section>
       </section>
@@ -127,19 +137,19 @@
         <div class="sub-title">访客人数统计</div>
         <div class="frame txt-font24">
           本天访问人数
-          <span class="txt-font40">3,000</span>
+          <span class="txt-font40">{{TodayCount}}</span>
         </div>
         <div class="frame txt-font24">
           昨日访问人数
-          <span class="txt-font40">3,000</span>
+          <span class="txt-font40">{{YesterdayCount}}</span>
         </div>
         <div class="frame txt-font24">
           本月访问人数
-          <span class="txt-font40">30,000</span>
+          <span class="txt-font40">{{CurrentMonthCount}}</span>
         </div>
         <div class="frame txt-font24">
           访问总人次
-          <span class="txt-font40">300,000</span>
+          <span class="txt-font40">{{AllCount}}</span>
         </div>
       </section>
       <section class="visitor">
@@ -156,33 +166,15 @@
                   <th>序号</th>
                   <th>设备名称</th>
                   <th>出入口名称</th>
-                  <th>失败次数</th>
+                  <th>进出次数</th>
                 </tr>
               </thead>
               <tbody>
-                <tr class="txt-font16">
-                  <td class="serial-num">01</td>
-                  <td class="device-name">展厅进门左侧1号</td>
-                  <td>展厅左进1</td>
-                  <td class="fail-num">300</td>
-                </tr>
-                <tr class="txt-font16">
-                  <td class="serial-num">02</td>
-                  <td class="device-name">展厅进门左侧2号</td>
-                  <td>展厅左进2</td>
-                  <td class="fail-num">200</td>
-                </tr>
-                <tr class="txt-font16">
-                  <td class="serial-num">03</td>
-                  <td class="device-name">展厅进门右侧1号</td>
-                  <td>展厅右进1</td>
-                  <td class="fail-num">400</td>
-                </tr>
-                <tr class="txt-font16">
-                  <td class="serial-num">04</td>
-                  <td class="device-name">展厅进门右侧2号</td>
-                  <td>展厅右进2</td>
-                  <td class="fail-num">100</td>
+                <tr class="txt-font16" v-for="item in currentDevice" :key="item.num">
+                  <td class="serial-num">{{item.num}}</td>
+                  <td class="device-name">{{item.DeviceName}}</td>
+                  <td>{{item.DoorwayName}}</td>
+                  <td class="fail-num">{{item.InOutCount}}</td>
                 </tr>
               </tbody>
             </table>
@@ -194,32 +186,30 @@
 </template>
 
 <script>
+let that = null;
 export default {
   name: "left-side",
   data() {
-    return {};
-  },
-  mounted() {
-    this.drawLine();
-    this.drawSecurity();
-    this.drawRepair();
-    this.drawOrder();
-    this.drawPark();
-    this.drawIncome();
-    this.drawUser();
-  },
-  methods: {
-    // 月度收费统计折线图
-    drawLine() {
-      let LineGraph = this.$echarts.init(
-        document.getElementById("month-chart")
-      );
-      LineGraph.setOption({
-        tooltip: { trigger: "axis" },
+    return {
+      // 收费
+      LastMonthTotalAmount: 200000,
+      LastMonthFeeRate: 52,
+      YearTotalAmount: 342000320,
+      YearFeeRate: 20,
+      fee: {
+        x: ["7月", "8月", "9月", "10月", "11月", "12月"],
+        list: [
+          [120, 132, 101, 134, 90, 230, 210],
+          [220, 182, 191, 234, 290, 330, 310],
+          [150, 232, 201, 154, 190, 330, 410],
+          [320, 332, 301, 334, 390, 330, 320]
+        ]
+      },
+      feeOption: {
         grid: {
-          left: "5%",
+          left: "8%",
           top: "4%",
-          bottom: "30%",
+          bottom: "20%",
           right: "0%"
         },
         legend: {
@@ -289,14 +279,9 @@ export default {
             data: [320, 332, 301, 334, 390, 330, 320]
           }
         ]
-      });
-    },
-    // 巡更安防统计-饼图
-    drawSecurity() {
-      let securityGraph = this.$echarts.init(
-        document.getElementById("security")
-      );
-      securityGraph.setOption({
+      },
+      // 巡更安防
+      securityOption: {
         legend: {
           orient: "vertical",
           align: "left",
@@ -329,12 +314,9 @@ export default {
             ]
           }
         ]
-      });
-    },
-    // 投报修情况统计-饼图
-    drawRepair() {
-      let repairGraph = this.$echarts.init(document.getElementById("repair"));
-      repairGraph.setOption({
+      },
+      // 投报修
+      repairOption: {
         legend: {
           orient: "vertical",
           align: "left",
@@ -343,11 +325,16 @@ export default {
           itemGap: 58,
           left: 300,
           data: [
-            { name: "投诉次数", icon: "circle" },
-            { name: "报修次数", icon: "circle" }
+            { name: "投诉次数", value: 56, icon: "circle" },
+            { name: "报修次数", value: 56, icon: "circle" }
           ],
           itemWidth: 14,
-          textStyle: { color: "#FEFEFE", fontSize: 16, padding: [0, 12] }
+          textStyle: {
+            color: "#FEFEFE",
+            fontSize: 16,
+            padding: [0, 12],
+            rich: { num: { fontSize: 36 } }
+          }
         },
         series: [
           {
@@ -365,12 +352,9 @@ export default {
             ]
           }
         ]
-      });
-    },
-    // 工单处理时效统计-柱状图
-    drawOrder() {
-      let orderGraph = this.$echarts.init(document.getElementById("order"));
-      orderGraph.setOption({
+      },
+      //工单
+      orderOption: {
         grid: {
           left: "0%",
           right: "4%",
@@ -381,7 +365,7 @@ export default {
         xAxis: {
           type: "value",
           position: "top",
-          min: 10,
+          min: 0,
           max: 1500,
           axisLine: {
             symbol: ["none", "arrow"],
@@ -394,7 +378,7 @@ export default {
         yAxis: {
           type: "category",
           boundaryGap: true,
-          offset: 2,
+          offset: 5,
           axisLine: {
             symbol: ["arrow", "none"],
             lineStyle: { color: "#0FEBFF" }
@@ -421,19 +405,23 @@ export default {
               distance: 10,
               color: "#FFFFFF",
               fontSize: 18,
-              // formatter: "{value}件"
+              verticalAlign: "middle",
+              formatter: "{c}件"
             },
             barWidth: 18,
             data: [324, 720, 900, 324]
           }
         ]
-      });
-    },
-    //停车-仪表图
-    drawPark() {
-      let parkGraph = this.$echarts.init(document.getElementById("park-space"));
-
-      parkGraph.setOption({
+      },
+      //停车
+      parkNum: 0,
+      parkRate: 48,
+      parkleftedNum: 1200,
+      flowNumToday: 3200,
+      flowRateToday: "50%",
+      flowNumAverage: 2000,
+      flowRateAverage: "30%",
+      parkOption: {
         grid: {
           left: "0%",
           right: "0%",
@@ -464,13 +452,9 @@ export default {
             data: [{ value: 48, name: "车位占有率" }]
           }
         ]
-      });
-    },
-    //停车收入——柱状图
-    drawIncome() {
-      let incomeGraph = this.$echarts.init(document.getElementById("income"));
-
-      incomeGraph.setOption({
+      },
+      // 停车收入
+      incomeOption: {
         grid: { top: "8%", right: "4%" },
         xAxis: {
           type: "category",
@@ -516,23 +500,52 @@ export default {
               distance: 10,
               color: "#FFFFFF",
               fontSize: 18,
-              // formatter: "{value}元"
+              verticalAlign: "middle",
+              formatter: "{c}元"
             }
           }
         ]
-      });
-    },
-    //
-    drawUser() {
-      let userGraph = this.$echarts.init(document.getElementById("user"));
-      userGraph.setOption({
+      },
+      // 访客
+      TodayCount: 3000,
+      YesterdayCount: 3000,
+      CurrentMonthCount: 3000,
+      AllCount: 3000,
+      DeviceStatistics: [],
+      currentDevice: [
+        {
+          num: 1,
+          DeviceName: "展厅进门左侧1号",
+          DoorwayName: "展厅左进1",
+          InOutCount: 0
+        },
+        {
+          num: 2,
+          DeviceName: "展厅进门左侧2号",
+          DoorwayName: "展厅左进2",
+          InOutCount: 0
+        },
+        {
+          num: 3,
+          DeviceName: "展厅进门右侧1号",
+          DoorwayName: "展厅右进1",
+          InOutCount: 0
+        },
+        {
+          num: 4,
+          DeviceName: "展厅进门右侧2号",
+          DoorwayName: "展厅右进2",
+          InOutCount: 140
+        }
+      ],
+      userOption: {
         legend: {
           orient: "vertical",
           align: "left",
           x: "right",
           y: "center",
           itemGap: 34,
-          left: 280,
+          left: 300,
           data: [
             { name: "物业人员", icon: "circle" },
             { name: "住户", icon: "circle" },
@@ -548,7 +561,7 @@ export default {
             name: "访问来源",
             type: "pie",
             radius: ["60%", "90%"],
-            center: ["20%", "50%"],
+            center: ["24%", "50%"],
             roseType: "radius",
             avoidLabelOverlap: false,
             label: { normal: { show: false }, emphasis: { show: true } },
@@ -562,7 +575,280 @@ export default {
             ]
           }
         ]
-      });
+      }
+    };
+  },
+  mounted() {
+    that = this;
+
+    this.getFee();
+    this.drawFee();
+    this.drawSecurity();
+    this.drawRepair();
+    this.drawOrder();
+    this.drawPark();
+    this.drawIncome();
+    this.drawUser();
+    this.getRepair();
+    this.getOrder();
+    this.getSecurity();
+    this.getPark();
+    this.getVistor();
+    this.refresh();
+  },
+  methods: {
+    // 月度收费统计折线图
+    drawFee() {
+      let LineGraph = this.$echarts.init(
+        document.getElementById("month-chart")
+      );
+      LineGraph.setOption(this.feeOption);
+    },
+    // 巡更安防统计-饼图
+    drawSecurity() {
+      let securityGraph = this.$echarts.init(
+        document.getElementById("security")
+      );
+      securityGraph.setOption(this.securityOption);
+    },
+    // 投报修情况统计-饼图
+    drawRepair() {
+      let repairGraph = this.$echarts.init(document.getElementById("repair"));
+
+      repairGraph.setOption(this.repairOption);
+    },
+    // 工单处理时效统计-柱状图
+    drawOrder() {
+      let orderGraph = this.$echarts.init(document.getElementById("order"));
+      orderGraph.setOption(this.orderOption);
+    },
+    //停车-仪表图
+    drawPark() {
+      let parkGraph = this.$echarts.init(document.getElementById("park-space"));
+      parkGraph.setOption(this.parkOption);
+    },
+    //停车收入——柱状图
+    drawIncome() {
+      let incomeGraph = this.$echarts.init(document.getElementById("income"));
+      incomeGraph.setOption(this.incomeOption);
+    },
+    //
+    drawUser() {
+      let userGraph = this.$echarts.init(document.getElementById("user"));
+      userGraph.setOption(this.userOption);
+    },
+    // 收费统计
+    getFee() {
+      this.ajax
+        .get("/FeeSummary/GetPanelStatistics?OwnerID=1157")
+        .then(function(res) {
+          let resData = res.data;
+          if (resData.Code === 10000) {
+            let result = resData.Data,
+              list = result.List,
+              payModel = [10, 20, 30, 40, 50, 60], //停车缴费 停车场买卡 广告发布 物业缴费 其他临时收费 直接收费
+              month = [],
+              tempList = [],
+              monthFee = [],
+              feeList = [];
+
+            feeList[0] = list.filter(function(item) {
+              return item.PayModel === 10;
+            });
+            feeList[1] = list.filter(function(item) {
+              return item.PayModel === 20;
+            });
+            feeList[2] = list.filter(function(item) {
+              return item.PayModel === 40;
+            });
+            feeList[3] = list.filter(function(item) {
+              return item.PayModel === 50;
+            });
+            feeList[0].forEach(function(item) {
+              month.push(item.Month + "月");
+              tempList.push(item.PayAmount);
+            });
+            monthFee.push(tempList);
+            tempList = [];
+            feeList[1].forEach(function(item) {
+              tempList.push(item.PayAmount);
+            });
+            monthFee.push(tempList);
+            tempList = [];
+            feeList[2].forEach(function(item) {
+              tempList.push(item.PayAmount);
+            });
+            monthFee.push(tempList);
+            tempList = [];
+            feeList[3].forEach(function(item) {
+              tempList.push(item.PayAmount);
+            });
+            monthFee.push(tempList);
+
+            that.LastMonthTotalAmount = result.LastMonthTotalAmount;
+            that.LastMonthFeeRate = Math.ceil(result.LastMonthFeeRate * 100);
+            that.YearTotalAmount = result.YearTotalAmount;
+            that.YearFeeRate = Math.ceil(result.YearFeeRate * 100);
+            that.feeOption.xAxis.data = month;
+            that.feeOption.series.forEach(function(item, index) {
+              item.data = monthFee[index];
+            });
+            that.drawFee();
+          }
+        })
+        .catch(function(err) {
+          console.log(err);
+        });
+    },
+    // 巡更安防统计
+    getSecurity() {
+      this.ajax
+        .get("/PatrolStatistics/GetPatrolPlanDT?OwnerID=1157")
+        .then(function(res) {
+          let resData = res.data;
+          if (resData.Code === 10000) {
+            let result = resData.Data,
+              type = ["FinishCount", "OvertimeCount", "NotFinishCount"];
+            that.securityOption.series[0].data.forEach(function(item, index) {
+              item.value = result[type[index]];
+            });
+            that.drawSecurity();
+          }
+        })
+        .catch(function(err) {
+          console.log(err);
+        });
+    },
+    // 投报修情况统计
+    getRepair() {
+      this.ajax
+        .get("/WordOrderStatistics/GetWorkOrderTypeCount?OwnerID=1157&Data={}")
+        .then(function(res) {
+          let resData = res.data;
+          if (resData.Code === 10000) {
+            let result = resData.Data;
+            that.repairOption.series[0].data.forEach(function(item, index) {
+              // "workordertype":{"0":"报修","1":"投诉"}
+              item.value = result[1 - index].Count;
+            });
+            that.drawRepair();
+          }
+        })
+        .catch(function(err) {
+          console.log(err);
+        });
+    },
+    // 工单处理时效统计
+    getOrder() {
+      this.ajax
+        .get(
+          "/WordOrderStatistics/GetDealEfficiency?OwnerID=1157&ProjectCode=115701&Data={}"
+        )
+        .then(function(res) {
+          let resData = res.data;
+          if (resData.Code === 10000) {
+            let result = resData.Data,
+              type = ["超过一天", "24小时内处理", "3小时内处理", "1小时内处理"],
+              list = [];
+            for (let i = 0; i < 4; i++) {
+              list.push(result[type[i]]);
+            }
+            that.orderOption.series[0].data = list;
+            that.orderOption.xAxis.max = Math.max.apply(null, list) * 2;
+            that.drawOrder();
+          }
+        })
+        .catch(function(err) {
+          console.log(err);
+        });
+    },
+    // 停车场统计
+    getPark() {
+      // data: 车位使用数 日均车流量 本日车流量
+      this.ajax
+        .get("ParkingOutinlog/InParkCarCount")
+        .then(function(res) {
+          let resData = res.data;
+          if (resData.Code === 10000) {
+            let result = resData.Data;
+            that.$root.parkingSpace = result;
+            that.parkNum = result[0];
+            that.flowNumToday = result[1];
+            that.flowNumAverage = result[2];
+            that.parkleftedNum = 3200 - result[0];
+            that.parkRate = Math.ceil((result[0] / 3200) * 100);
+            that.flowRateToday = Math.ceil((result[1] / 10000) * 100) + "%";
+            that.flowRateAverage = Math.ceil((result[2] / 10000) * 100) + "%";
+            that.parkOption.series[0].data[0].value = that.parkRate;
+            that.drawPark();
+          }
+        })
+        .catch(function(err) {
+          console.log(err);
+        });
+    },
+    // 访客统计
+    getVistor() {
+      this.ajax
+        .get("/DeviceRecordofaccess/GetVisterStatisticsModel?OwnerID=1157")
+        .then(function(res) {
+          let resData = res.data;
+          if (resData.Code === 10000) {
+            let result = resData.Data,
+              type = [
+                "OwnerCount",
+                "UserCount",
+                "ShopCount",
+                "VisterCount",
+                "OtherCount"
+              ];
+            that.TodayCount = result.TodayCount;
+            that.YesterdayCount = result.YesterdayCount;
+            that.CurrentMonthCount = result.CurrentMonthCount;
+            that.AllCount = result.AllCount;
+            result.DeviceStatistics.forEach(function(item, index) {
+              item.num = index + 1;
+            });
+            that.DeviceStatistics = result.DeviceStatistics;
+            that.currentDevice = result.DeviceStatistics.slice(0, 4);
+            that.userOption.series[0].data.forEach(function(item, index) {
+              item.value = result.UserInOutStatistics[type[index]];
+            });
+            that.drawUser();
+          }
+        })
+        .catch(function(err) {
+          console.log(err);
+        });
+    },
+    // 定时更新
+    refresh() {
+      let hour = 60 * 60 * 1000,
+        minute = 60 * 1000,
+        currentIndex = 1,
+        startIndex = 0;
+      //
+      setInterval(() => {
+        this.getFee();
+      }, hour);
+      //
+      setInterval(() => {
+        this.getSecurity();
+        this.getRepair();
+        this.getOrder();
+        this.getVistor();
+        this.getPark();
+      }, minute * 3);
+      // 闸机情况统计
+      setInterval(() => {
+        let maxIndex = Math.ceil(that.DeviceStatistics.length / 4);
+        that.currentDevice = that.DeviceStatistics.slice(
+          startIndex,
+          4 * currentIndex
+        );
+        startIndex = currentIndex >= maxIndex ? 0 : 4 * currentIndex;
+        currentIndex = currentIndex >= maxIndex ? 1 : currentIndex + 1;
+      }, 10 * 1000);
     }
   }
 };
@@ -662,9 +948,8 @@ export default {
   background: #2a3242;
   border-radius: 4px;
 }
-.finance-progress-month::after,
-.finance-progress-all::after {
-  content: "";
+.finance-progress-month,
+.finance-progress-all {
   display: block;
   position: absolute;
   top: 0;
@@ -672,10 +957,10 @@ export default {
   background-color: #4c82ff;
   border-radius: 4px;
 }
-.finance-progress-month::after {
+.finance-progress-month {
   width: 52%;
 }
-.finance-progress-all::after {
+.finance-progress-all {
   width: 20%;
 }
 .fix-clear::before,
@@ -813,34 +1098,21 @@ export default {
 .flow-average span:first-child {
   margin-right: 12px;
 }
-.flow-progress-today::before,
-.flow-progress-average::before {
-  content: url(/static/images/car.png);
-  display: block;
+.flow-icon {
   position: absolute;
   top: -20px;
+  width: 30px;
+  height: 17px;
+  background: url(/static/images/car.png) no-repeat top;
+  background-size: 100%;
 }
-.flow-progress-today::before {
-  left: 50%;
-}
-.flow-progress-average::before {
-  left: 30%;
-}
-.flow-progress-today::after,
-.flow-progress-average::after {
-  content: "";
-  display: block;
+.flow-progress-today,
+.flow-progress-average {
   position: absolute;
   top: 0;
   height: 8px;
   background-color: #4c82ff;
   border-radius: 4px;
-}
-.flow-progress-today::after {
-  width: 50%;
-}
-.flow-progress-average::after {
-  width: 30%;
 }
 .visitor {
   display: flex;
