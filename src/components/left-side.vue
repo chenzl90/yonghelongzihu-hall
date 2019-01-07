@@ -76,12 +76,12 @@
           <section class="income-all">
             <div class="sub-title">总营收</div>
             <div class="income-park">
-              200,000
+              {{incomeTotal}}
               <span class="little-font">元</span>
             </div>
             <div class="finance-title">
               日均营收
-              <span class="income-all-color">2000 元</span>
+              <span class="income-all-color">{{incomeAverage}} 元</span>
             </div>
           </section>
           <section class="income-today">
@@ -90,7 +90,7 @@
               <span class="little-title txt-font14">(和昨日同时段的同比)</span>
             </div>
             <div class="income-park">
-              200,000
+              {{incomeToday}}
               <span class="little-font">元</span>
             </div>
             <div class="income-increase">+100（+0.42%）</div>
@@ -454,6 +454,10 @@ export default {
         ]
       },
       // 停车收入
+      incomeTotal: 20000,
+      incomeAverage: 2000,
+      incomeToday: 200,
+
       incomeOption: {
         grid: { top: "8%", right: "4%" },
         xAxis: {
@@ -848,6 +852,19 @@ export default {
         );
         startIndex = currentIndex >= maxIndex ? 0 : 4 * currentIndex;
         currentIndex = currentIndex >= maxIndex ? 1 : currentIndex + 1;
+      }, 10 * 1000);
+
+      // 车位收入假数据
+
+      setInterval(() => {
+        let currentDay = new Date(),
+        currentIncome = Math.floor(Math.random() * 10);
+
+        that.incomeToday =
+          that.incomeToday < 10000 ? that.incomeToday + currentIncome : 2000;
+        that.incomeTotal =
+          that.incomeTotal < 100000 ? that.incomeTotal + currentIncome : 30000;
+
       }, 10 * 1000);
     }
   }
