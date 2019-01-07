@@ -9,38 +9,42 @@
             <div class="finance-content-left">
               <div class="finance-title">上月收费总额</div>
               <div class="finance-content">
-                200,000
+                {{LastMonthTotalAmount}}
                 <span class="little-font">元</span>
               </div>
             </div>
             <div class="finance-content-right">
               <div class="finance-title">上月收缴率</div>
               <div class="finance-content">
-                52
+                {{LastMonthFeeRate}}
                 <span class="little-font">%</span>
               </div>
             </div>
           </div>
-          <div class="finance-progress finance-progress-month"></div>
+          <div class="finance-progress">
+            <div class="finance-progress-month" v-bind:style="{width: LastMonthFeeRate + '%' }"></div>
+          </div>
         </section>
         <section class="finance-wrapper-right">
           <div class="fix-clear">
             <div class="finance-content-left">
               <div class="finance-title">本年收费总额</div>
               <div class="finance-content">
-                342,000,320
+                {{YearTotalAmount}}
                 <span class="little-font">元</span>
               </div>
             </div>
             <div class="finance-content-right">
               <div class="finance-title">总收缴率</div>
               <div class="finance-content">
-                20
+                {{YearFeeRate}}
                 <span class="little-font">%</span>
               </div>
             </div>
           </div>
-          <div class="finance-progress finance-progress-all"></div>
+          <div class="finance-progress">
+            <div class="finance-progress-all" v-bind:style="{width: YearFeeRate + '%' }"></div>
+          </div>
         </section>
       </section>
       <div class="sub-title">月度收费统计</div>
@@ -194,32 +198,30 @@
 </template>
 
 <script>
+let that = null;
 export default {
   name: "left-side",
   data() {
-    return {};
-  },
-  mounted() {
-    this.drawLine();
-    this.drawSecurity();
-    this.drawRepair();
-    this.drawOrder();
-    this.drawPark();
-    this.drawIncome();
-    this.drawUser();
-  },
-  methods: {
-    // 月度收费统计折线图
-    drawLine() {
-      let LineGraph = this.$echarts.init(
-        document.getElementById("month-chart")
-      );
-      LineGraph.setOption({
-        tooltip: { trigger: "axis" },
+    return {
+      // 收费
+      LastMonthTotalAmount: 200000,
+      LastMonthFeeRate: 52,
+      YearTotalAmount: 342000320,
+      YearFeeRate: 20,
+      fee: {
+        x: ["7月", "8月", "9月", "10月", "11月", "12月"],
+        list: [
+          [120, 132, 101, 134, 90, 230, 210],
+          [220, 182, 191, 234, 290, 330, 310],
+          [150, 232, 201, 154, 190, 330, 410],
+          [320, 332, 301, 334, 390, 330, 320]
+        ]
+      },
+      feeOption: {
         grid: {
-          left: "5%",
+          left: "8%",
           top: "4%",
-          bottom: "30%",
+          bottom: "20%",
           right: "0%"
         },
         legend: {
@@ -289,7 +291,31 @@ export default {
             data: [320, 332, 301, 334, 390, 330, 320]
           }
         ]
-      });
+      }
+    };
+  },
+  mounted() {
+    that = this;
+
+    this.getFee();
+    this.drawFee();
+    this.drawSecurity();
+    this.drawRepair();
+    this.drawOrder();
+    this.drawPark();
+    this.drawIncome();
+    this.drawUser();
+    this.getRepair();
+    this.refresh();
+  },
+  methods: {
+    // 月度收费统计折线图
+    drawFee() {
+      let LineGraph = this.$echarts.init(
+        document.getElementById("month-chart")
+      );
+
+      LineGraph.setOption(this.feeOption);
     },
     // 巡更安防统计-饼图
     drawSecurity() {
@@ -421,7 +447,8 @@ export default {
               distance: 10,
               color: "#FFFFFF",
               fontSize: 18,
-              // formatter: "{value}件"
+              verticalAlign: "middle",
+              formatter: "{c}件"
             },
             barWidth: 18,
             data: [324, 720, 900, 324]
@@ -516,7 +543,8 @@ export default {
               distance: 10,
               color: "#FFFFFF",
               fontSize: 18,
-              // formatter: "{value}元"
+              verticalAlign: "middle",
+              formatter: "{c}元"
             }
           }
         ]
@@ -563,6 +591,88 @@ export default {
           }
         ]
       });
+    },
+    // 收费统计
+    getFee() {
+      this.axios
+        .get(
+          "https://psiptestapi.wx.weiyu.etor.vip/api/v1/FeeSummary/GetPanelStatistics?OwnerID=1157"
+        )
+        .then(function(res) {
+          let resData = res.data;
+          if (resData.Code === 10000) {
+            let result = resData.Data,
+              list = result.List,
+              payModel = [10, 20, 30, 40, 50, 60], //停车缴费 停车场买卡 广告发布 物业缴费 其他临时收费 直接收费
+              month = [],
+              tempList = [],
+              monthFee = [],
+              feeList = [];
+
+            feeList[0] = list.filter(function(item) {
+              return item.PayModel === 10;
+            });
+            feeList[1] = list.filter(function(item) {
+              return item.PayModel === 20;
+            });
+            feeList[2] = list.filter(function(item) {
+              return item.PayModel === 40;
+            });
+            feeList[3] = list.filter(function(item) {
+              return item.PayModel === 50;
+            });
+            feeList[0].forEach(function(item) {
+              month.push(item.Month + "月");
+              tempList.push(item.PayAmount);
+            });
+            monthFee.push(tempList);
+            tempList = [];
+            feeList[1].forEach(function(item) {
+              tempList.push(item.PayAmount);
+            });
+            monthFee.push(tempList);
+            tempList = [];
+            feeList[2].forEach(function(item) {
+              tempList.push(item.PayAmount);
+            });
+            monthFee.push(tempList);
+            tempList = [];
+            feeList[3].forEach(function(item) {
+              tempList.push(item.PayAmount);
+            });
+            monthFee.push(tempList);
+
+            that.LastMonthTotalAmount = result.LastMonthTotalAmount;
+            that.LastMonthFeeRate = Math.round(result.LastMonthFeeRate * 100);
+            that.YearTotalAmount = result.YearTotalAmount;
+            that.YearFeeRate = Math.round(result.YearFeeRate * 100);
+            that.feeOption.xAxis.data = month;
+            that.feeOption.series.forEach(function(item, index) {
+              item.data = monthFee[index];
+            });
+            that.drawFee();
+          }
+        })
+        .catch(function(err) {
+          console.log(err);
+        });
+    },
+    // 投报修情况统计
+    getRepair() {
+      this.axios
+        .get(
+          "https://psiptestapi.wx.weiyu.etor.vip/api/v1/WordOrderStatistics/GetWorkOrderTypeCount?OwnerID=1157&Data={}"
+        )
+        .then(function(res) {
+          console.log(res);
+        });
+    },
+    // 定时更新
+    refresh() {
+      let feeTimer = setInterval(() => {
+        this.getFee();
+        clearInterval(feeTimer);
+      }, 60 * 60 * 1000);
     }
   }
 };
@@ -662,9 +772,8 @@ export default {
   background: #2a3242;
   border-radius: 4px;
 }
-.finance-progress-month::after,
-.finance-progress-all::after {
-  content: "";
+.finance-progress-month,
+.finance-progress-all {
   display: block;
   position: absolute;
   top: 0;
@@ -672,10 +781,10 @@ export default {
   background-color: #4c82ff;
   border-radius: 4px;
 }
-.finance-progress-month::after {
+.finance-progress-month {
   width: 52%;
 }
-.finance-progress-all::after {
+.finance-progress-all {
   width: 20%;
 }
 .fix-clear::before,
