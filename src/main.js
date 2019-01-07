@@ -16,6 +16,11 @@ Vue.config.productionTip = false
  * 增加请求接口
  */
 Vue.prototype.axios=axios;
+Vue.prototype.ajax=axios.create({
+  // baseURL:'https://psipbmsapi.wx.weiyu.etor.vip/api/v1/',//正式
+  baseURL:'https://psiptestapi.wx.weiyu.etor.vip/api/v1/',//测试
+  timeout:30000
+});
 Vue.component('model-loading',loading);
 /* eslint-disable no-new */
 new Vue({
