@@ -2,14 +2,14 @@
   <section id="tower-model" class="tower-model">
     <!--房间数及入住率-->
     <span class="room-occupancy">
-      <span style="margin-right:30px;font-size:48px;color:#0febff;">52%</span>入住<br>
-      <span style="margin-right:30px;font-size:48px;color:#126be7;">48%</span>空置
+      <span style="margin-right:30px;font-size:48px;color:#0febff;">28%</span>入住<br>
+      <span style="margin-right:30px;font-size:48px;color:#126be7;">72%</span>空置
     </span>
     <span class="room-total">房间数<br><span style="font-size:35px;">{{rooms}}个</span></span>
     <!--商铺数及入住率-->
     <span class="room-occupancy" style="top:1263px;left:147px;">
-      <span style="margin-right:30px;font-size:48px;color:#0febff;">52%</span>入住<br>
-      <span style="margin-right:30px;font-size:48px;color:#126be7;">48%</span>空置
+      <span style="margin-right:30px;font-size:48px;color:#0febff;">1%</span>入住<br>
+      <span style="margin-right:30px;font-size:48px;color:#126be7;">99%</span>空置
     </span>
     <span class="room-total" style="top:1098px;">商铺数<br><span style="font-size:35px;">{{shops}}个</span></span>
     <!--人口统计-->
@@ -22,8 +22,8 @@
     </span>
     <!--车位统计-->
     <span class="room-occupancy" style="left:2893px;top:1228px;">
-      <span style="margin-right:30px;font-size:48px;color:#0febff;">52%</span>购买<br>
-      <span style="margin-right:30px;font-size:48px;color:#126be7;">48%</span>空闲
+      <span style="margin-right:30px;font-size:48px;color:#0febff;">14%</span>购买<br>
+      <span style="margin-right:30px;font-size:48px;color:#126be7;">86%</span>空闲
     </span>
     <span class="room-total" style="left:2752px;top:1563px;line-height: 1.4;">
       剩余停车位<br>
@@ -70,8 +70,8 @@
         totalNumber:36000000,
         totalNumberCar:0,
         parkingSpace:0,
-        shops:12000,
-        rooms:12000
+        shops:102,
+        rooms:1800
       }
     },
     mounted: function () {
