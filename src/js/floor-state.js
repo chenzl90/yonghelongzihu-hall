@@ -5,21 +5,6 @@ import higherUrlb from '@/../static/images/towerb-floor-state-lower.png'
 const towers = [{
     name: 'A塔',
     frequency:0.6,
-    floors: [5,9,11]||[1,11,11],
-    floorHeight:96,
-    perFloorRooms: 60,
-    duration:180000,
-    state: {
-      height: 128,
-      width: 969,
-      top: 366,
-      left: 415,
-      url: [lowerUrl, higherUrl]
-    }
-  },
-  {
-    name: 'B塔',
-    frequency:0.6,
     floors: [4,8,11]||[1,11,11],
     floorHeight:96,
     perFloorRooms: 60,
@@ -31,6 +16,21 @@ const towers = [{
       left: 2247,
       url: [lowerUrlb, higherUrlb],
       style: 'float:right;margin-top:-76px;'
+    }
+  },
+  {
+    name: 'B塔',
+    frequency:0.6,
+    floors: [5,9,11]||[1,11,11],
+    floorHeight:96,
+    perFloorRooms: 60,
+    duration:180000,
+    state: {
+      height: 128,
+      width: 969,
+      top: 366,
+      left: 415,
+      url: [lowerUrl, higherUrl]
     }
   }
 ];
