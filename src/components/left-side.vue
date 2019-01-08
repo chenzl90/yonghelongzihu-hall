@@ -9,14 +9,14 @@
             <div class="finance-content-left">
               <div class="finance-title">上月收费总额</div>
               <div class="finance-content">
-                {{LastMonthTotalAmount}}
+                <span ref="LastMonthTotalAmount">{{LastMonthTotalAmount}}</span>
                 <span class="little-font">元</span>
               </div>
             </div>
             <div class="finance-content-right">
               <div class="finance-title">上月收缴率</div>
               <div class="finance-content">
-                {{LastMonthFeeRate}}
+                <span ref="LastMonthFeeRate">{{LastMonthFeeRate}}</span>
                 <span class="little-font">%</span>
               </div>
             </div>
@@ -30,14 +30,14 @@
             <div class="finance-content-left">
               <div class="finance-title">本年收费总额</div>
               <div class="finance-content">
-                {{YearTotalAmount}}
+                <span ref="YearTotalAmount">{{YearTotalAmount}}</span>
                 <span class="little-font">元</span>
               </div>
             </div>
             <div class="finance-content-right">
               <div class="finance-title">总收缴率</div>
               <div class="finance-content">
-                {{YearFeeRate}}
+                <span ref="YearFeeRate">{{YearFeeRate}}</span>
                 <span class="little-font">%</span>
               </div>
             </div>
@@ -76,12 +76,12 @@
           <section class="income-all">
             <div class="sub-title">总营收</div>
             <div class="income-park">
-              {{incomeTotal}}
+              <span class="incomeTotal">{{incomeTotal}}</span>
               <span class="little-font">元</span>
             </div>
             <div class="finance-title">
               日均营收
-              <span class="income-all-color">{{incomeAverage}} 元</span>
+              <span ref="income-all-color">{{incomeAverage}} 元</span>
             </div>
           </section>
           <section class="income-today">
@@ -90,7 +90,7 @@
               <span class="little-title txt-font14">(和昨日同时段的同比)</span>
             </div>
             <div class="income-park">
-              {{incomeToday}}
+              <span ref="incomeToday">{{incomeToday}}</span>
               <span class="little-font">元</span>
             </div>
             <div class="income-increase">+100（+0.42%）</div>
@@ -104,13 +104,13 @@
         <section class="park-space">
           <div class="park-title">
             <span class="txt-font14">当前空余车位</span>
-            <span class="txt-font52">{{parkleftedNum}}</span>
+            <span class="txt-font52" ref="parkleftedNum">{{parkleftedNum}}</span>
             <span class="txt-font20">/ 3200</span>
           </div>
           <section class="car-flow">
             <div class="flow-today">
               <span class="txt-font16">今日车流量</span>
-              <span class="txt-font32">{{flowNumToday}}</span>
+              <span class="txt-font32" ref="flowNumToday">{{flowNumToday}}</span>
             </div>
             <div class="flow-progress">
               <div class="flow-icon" v-bind:style="{left: flowRateToday }"></div>
@@ -120,7 +120,7 @@
           <section class="car-flow">
             <div class="flow-average">
               <span class="txt-font16">日均车流量</span>
-              <span class="txt-font32">{{flowNumAverage}}</span>
+              <span class="txt-font32" ref="flowNumAverage">{{flowNumAverage}}</span>
             </div>
             <div class="flow-progress">
               <div class="flow-icon" v-bind:style="{left: flowRateAverage}"></div>
@@ -137,19 +137,19 @@
         <div class="sub-title">访客人数统计</div>
         <div class="frame txt-font24">
           本天访问人数
-          <span class="txt-font40">{{TodayCount}}</span>
+          <span class="txt-font40" ref="TodayCount">{{TodayCount}}</span>
         </div>
         <div class="frame txt-font24">
           昨日访问人数
-          <span class="txt-font40">{{YesterdayCount}}</span>
+          <span class="txt-font40" ref="YesterdayCount">{{YesterdayCount}}</span>
         </div>
         <div class="frame txt-font24">
           本月访问人数
-          <span class="txt-font40">{{CurrentMonthCount}}</span>
+          <span class="txt-font40" ref="CurrentMonthCount">{{CurrentMonthCount}}</span>
         </div>
         <div class="frame txt-font24">
           访问总人次
-          <span class="txt-font40">{{AllCount}}</span>
+          <span class="txt-font40" ref="AllCount">{{AllCount}}</span>
         </div>
       </section>
       <section class="visitor">
@@ -186,7 +186,7 @@
 </template>
 
 <script>
-import Count from "@/js/animation-count.js";
+import CountUp from '@/js/count-up.js'
 let that = null;
 export default {
   name: "left-side",

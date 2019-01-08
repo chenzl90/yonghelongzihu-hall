@@ -5,20 +5,20 @@
       <span style="margin-right:30px;font-size:48px;color:#0febff;">28%</span>入住<br>
       <span style="margin-right:30px;font-size:48px;color:#126be7;">72%</span>空置
     </span>
-    <span class="room-total">房间数<br><span style="font-size:35px;">{{rooms}}个</span></span>
+    <span class="room-total">房间数<br><span style="font-size:35px;"><span ref="rooms">{{rooms}}</span>个</span></span>
     <!--商铺数及入住率-->
     <span class="room-occupancy" style="top:1263px;left:147px;">
       <span style="margin-right:30px;font-size:48px;color:#0febff;">1%</span>入住<br>
       <span style="margin-right:30px;font-size:48px;color:#126be7;">99%</span>空置
     </span>
-    <span class="room-total" style="top:1098px;">商铺数<br><span style="font-size:35px;">{{shops}}个</span></span>
+    <span class="room-total" style="top:1098px;">商铺数<br><span style="font-size:35px;"><span ref="shops">{{shops}}</span>个</span></span>
     <!--人口统计-->
     <span style="position:absolute;left:2726px;top:392px;font-size:27px;color:#fff;">
-      总人数<span style="margin-left:30px;font-size:50px;color:#0febff;">{{totalNumber}}</span><br>
-      总车数<span style="margin-left:30px;font-size:50px;color:#126be7;">{{totalNumberCar}}</span>
+      总人数<span style="margin-left:30px;font-size:50px;color:#0febff;" ref="totalNumber">{{totalNumber}}</span><br>
+      总车数<span style="margin-left:30px;font-size:50px;color:#126be7;" ref="totalNumberCar">{{totalNumberCar}}</span>
     </span>
     <span style="position:absolute;left:3265px;top:414px;font-size:27px;color:#fff;line-height: 1.2;">
-      男女比例<br><span style="font-size:84px;color:#0febff;">1:1</span>
+      男女比例<br><span style="font-size:84px;color:#0febff;">3:2</span>
     </span>
     <!--车位统计-->
     <span class="room-occupancy" style="left:2893px;top:1228px;">
@@ -27,7 +27,8 @@
     </span>
     <span class="room-total" style="left:2752px;top:1563px;line-height: 1.4;">
       剩余停车位<br>
-      <span style="font-size:48px;color:#0febff;">{{parkingSpace||0}}/</span>
+      <span style="font-size:48px;color:#0febff;" ref="parkingSpace">{{parkingSpace}}</span>
+      <span style="font-size:48px;color:#0febff;">/</span>
       <span style="font-size:32px;color:#fff;">3200</span>
     </span>
   </section>
@@ -35,7 +36,7 @@
 <script>
   import Elevator from '@/js/Elevator.js'
   import FloorState from '@/js/floor-state.js'
-  import Count from '@/js/animation-count.js'
+  import CountUp from '@/js/count-up.js'
   export default {
     data: function () {
       return {
@@ -65,29 +66,24 @@
             doorSide: 'Left'
           }
         ],
-        remainParkingSpace:0,
-        remainParkingSpaceLoading:true,
-        totalNumber:36000000,
-        totalNumberCar:0,
-        parkingSpace:0,
-        shops:102,
-        rooms:1800
+        remainParkingSpace: 0,
+        remainParkingSpaceLoading: true,
+        totalNumber: 10000,
+        totalNumberCar: 0,
+        parkingSpace: 0,
+        shops: 102,
+        rooms: 1800
       }
     },
     mounted: function () {
       this.init();
     },
-    watch:{
-      '$root.parkingSpace':function(value){
-        let count=new Count();
-        let count2=new Count();
-        let that=this;
-        count.init(0,3200-value[0],function(value,beauty){
-          that.parkingSpace=value;
-        })
-        count2.init(0,value[0],function(value,beauty){
-          that.totalNumberCar=beauty;
-        })
+    watch: {
+      '$root.parkingSpace': function (value) {
+        let count1 = new CountUp(this.$refs.parkingSpace, 0,3200 - value[0],0,2);
+        let count2 = new CountUp(this.$refs.totalNumberCar, 0, value[0],0,2);
+        count1.start();
+        count2.start();
       }
     },
     methods: {
@@ -116,24 +112,15 @@
         });
         floorState.setTempreture();
       },
-      count:function(){
-        let count=new Count();
-        let count2=new Count();
-        let count3=new Count();
-        let count4=new Count();
-        let that=this;
-        count.init(0,this.totalNumber,function(value,beauty){
-          that.totalNumber=beauty;
-        });
-        count2.init(0,this.totalNumberCar,function(value,beauty){
-          that.totalNumberCar=beauty;
-        });
-        count3.init(0,this.rooms,function(value,beauty){
-          that.rooms=beauty;
-        });
-        count4.init(0,this.shops,function(value,beauty){
-          that.shops=beauty;
-        });
+      count: function () {
+        let count1 = new CountUp(this.$refs.totalNumber, 0,this.totalNumber,0,2);
+        //let count2 = new CountUp(this.$refs.totalNumberCar, 0,this.totalNumberCar,0,2);
+        let count3 = new CountUp(this.$refs.rooms, 0, this.rooms,0,2);
+        let count4 = new CountUp(this.$refs.shops, 0, this.shops,0,2);
+        count1.start();
+        //count2.start();
+        count3.start();
+        count4.start();
       }
     }
   }
@@ -143,7 +130,7 @@
   .tower-model {
     position: relative;
     width: 3479px;
-    height:2050px;
+    height: 2050px;
     margin: 0 auto;
     background-size: 3479px 1968px;
     background-image: url('/static/images/building.png');
@@ -168,4 +155,5 @@
     font-size: 20px;
     color: #fff;
   }
+
 </style>
