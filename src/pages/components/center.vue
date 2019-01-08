@@ -14,8 +14,8 @@
     <span class="room-total" style="top:1098px;">商铺数<br><span style="font-size:35px;">12,000个</span></span>
     <!--人口统计-->
     <span style="position:absolute;left:2726px;top:392px;font-size:27px;color:#fff;">
-      总人数<span style="margin-left:30px;font-size:50px;color:#0febff;">36,000,000</span><br>
-      总车数<span style="margin-left:30px;font-size:50px;color:#126be7;">123,200</span>
+      总人数<span style="margin-left:30px;font-size:50px;color:#0febff;">{{totalNumber}}</span><br>
+      总车数<span style="margin-left:30px;font-size:50px;color:#126be7;">{{totalNumberCar}}</span>
     </span>
     <span style="position:absolute;left:3265px;top:414px;font-size:27px;color:#fff;line-height: 1.2;">
       男女比例<br><span style="font-size:84px;color:#0febff;">1:1</span>
@@ -27,7 +27,7 @@
     </span>
     <span class="room-total" style="left:2752px;top:1563px;line-height: 1.4;">
       剩余停车位<br>
-      <span style="font-size:48px;color:#0febff;">0/</span>
+      <span style="font-size:48px;color:#0febff;">{{parkingSpace||0}}/</span>
       <span style="font-size:32px;color:#fff;">3200</span>
     </span>
   </section>
@@ -35,6 +35,7 @@
 <script>
   import Elevator from '@/js/Elevator.js'
   import FloorState from '@/js/floor-state.js'
+  import Count from '@/js/animation-count.js'
   export default {
     data: function () {
       return {
@@ -65,15 +66,28 @@
           }
         ],
         remainParkingSpace:0,
-        remainParkingSpaceLoading:true
+        remainParkingSpaceLoading:true,
+        totalNumber:36000000,
+        totalNumberCar:123200,
+        parkingSpace:0
       }
     },
     mounted: function () {
       this.init();
     },
+    watch:{
+      '$root.parkingSpace':function(value){
+        let count=new Count();
+        let that=this;
+        count.init(0,value[0],function(value,beauty){
+          that.parkingSpace=value;
+        })
+      }
+    },
     methods: {
       init: function () {
         let that = this;
+        this.count();
         this.$nextTick().then(function () {
           that.addElevators();
           that.addFloorsState();
@@ -95,6 +109,17 @@
           container: '#tower-model'
         });
         floorState.setTempreture();
+      },
+      count:function(){
+        let count=new Count();
+        let count2=new Count();
+        let that=this;
+        count.init(0,this.totalNumber,function(value,beauty){
+          that.totalNumber=beauty;
+        })
+        count2.init(0,this.totalNumberCar,function(value,beauty){
+          that.totalNumberCar=beauty;
+        })
       }
     }
   }
