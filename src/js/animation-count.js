@@ -16,6 +16,7 @@ Count.prototype.init=function(start,end,fn){
     let that=this;
 
     this.count=start;
+    clearInterval(this.timerId);
     this.timerId=setInterval(function(){
         if(that.count+unit>end){
             clearInterval(that.timerId);
