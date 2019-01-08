@@ -186,6 +186,7 @@
 </template>
 
 <script>
+import Count from "@/js/animation-count.js";
 let that = null;
 export default {
   name: "left-side",
@@ -690,9 +691,26 @@ export default {
             monthFee.push(tempList);
 
             that.LastMonthTotalAmount = result.LastMonthTotalAmount;
+            let count = new Count();
+            count.init(0, that.LastMonthTotalAmount, function(value, beauty) {
+              that.LastMonthTotalAmount = beauty;
+            });
+
             that.LastMonthFeeRate = Math.ceil(result.LastMonthFeeRate * 100);
+            let count1 = new Count();
+            count1.init(0, that.LastMonthFeeRate, function(value) {
+              that.LastMonthFeeRate = value;
+            });
             that.YearTotalAmount = result.YearTotalAmount;
+            let count2 = new Count();
+            count2.init(0, that.YearTotalAmount, function(value, beauty) {
+              that.YearTotalAmount = beauty;
+            });
             that.YearFeeRate = Math.ceil(result.YearFeeRate * 100);
+            let count3 = new Count();
+            count3.init(0, that.YearFeeRate, function(value) {
+              that.YearFeeRate = value;
+            });
             that.feeOption.xAxis.data = month;
             that.feeOption.series.forEach(function(item, index) {
               item.data = monthFee[index];
@@ -855,16 +873,29 @@ export default {
       }, 10 * 1000);
 
       // 车位收入假数据
+      let count11 = new Count(),
+        count12 = new Count();
 
       setInterval(() => {
         let currentDay = new Date(),
-        currentIncome = Math.floor(Math.random() * 10);
-
+          currentIncome = Math.floor(Math.random() * 10);
+        if (typeof that.incomeTotal == "string") {
+          that.incomeTotal = parseInt(that.incomeTotal.split(",").join(""));
+        }
+        if (typeof that.incomeToday == "string") {
+          that.incomeToday = parseInt(that.incomeToday.split(",").join(""));
+        }
         that.incomeToday =
           that.incomeToday < 10000 ? that.incomeToday + currentIncome : 2000;
         that.incomeTotal =
           that.incomeTotal < 100000 ? that.incomeTotal + currentIncome : 30000;
 
+          count11.init(2000,that.incomeTotal,function(value,beauty){
+            that.incomeTotal = beauty;
+          });
+          count12.init(200,that.incomeToday,function(value,beauty){
+            that.incomeToday = beauty;
+          });
       }, 10 * 1000);
     }
   }
