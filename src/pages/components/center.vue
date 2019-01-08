@@ -82,7 +82,7 @@
         let count=new Count();
         let count2=new Count();
         let that=this;
-        count.init(0,32000-value[0],function(value,beauty){
+        count.init(0,3200-value[0],function(value,beauty){
           that.parkingSpace=value;
         })
         count2.init(0,value[0],function(value,beauty){

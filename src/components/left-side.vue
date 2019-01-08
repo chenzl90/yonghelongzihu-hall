@@ -417,10 +417,10 @@ export default {
       //停车
       parkNum: 0,
       parkRate: 48,
-      parkleftedNum: 1200,
-      flowNumToday: 3200,
+      parkleftedNum: 1,
+      flowNumToday: 1,
       flowRateToday: "50%",
-      flowNumAverage: 2000,
+      flowNumAverage: 1,
       flowRateAverage: "30%",
       parkOption: {
         grid: {
@@ -512,9 +512,9 @@ export default {
         ]
       },
       // 访客
-      TodayCount: 3000,
-      YesterdayCount: 3000,
-      CurrentMonthCount: 3000,
+      TodayCount: 0,
+      YesterdayCount: 0,
+      CurrentMonthCount: 0,
       AllCount: 3000,
       DeviceStatistics: [],
       currentDevice: [
@@ -645,7 +645,7 @@ export default {
     // 收费统计
     getFee() {
       this.ajax
-        .get("/FeeSummary/GetPanelStatistics?OwnerID=1157")
+        .get("/FeeSummary/GetPanelStatistics?OwnerID=1492")
         .then(function(res) {
           let resData = res.data;
           if (resData.Code === 10000) {
@@ -823,7 +823,11 @@ export default {
         .then(function(res) {
           let resData = res.data;
           if (resData.Code === 10000) {
-            let result = resData.Data;
+            let result = resData.Data,
+              parkNumPrev = that.parkNum,
+              flowNumTodayPrev = that.flowNumToday,
+              flowNumAveragePrev = that.flowNumAverage;
+
             that.$root.parkingSpace = result;
             that.parkNum = result[0];
             that.flowNumToday = result[1];
@@ -834,6 +838,20 @@ export default {
             that.flowRateAverage = Math.ceil((result[2] / 10000) * 100) + "%";
             that.parkOption.series[0].data[0].value = that.parkRate;
             that.drawPark();
+            let count21 = new Count(),
+              count22 = new Count(),
+              count23 = new Count();
+            count21.init(parkNumPrev, that.parkNum, function(value) {
+              that.parkNum = value;
+            });
+            count22.init(flowNumTodayPrev, that.flowNumToday, function(value) {
+              that.flowNumToday = value;
+            });
+            count23.init(flowNumAveragePrev, that.flowNumAverage, function(
+              value
+            ) {
+              that.flowNumAverage = value;
+            });
           }
         })
         .catch(function(err) {
@@ -854,7 +872,12 @@ export default {
                 "ShopCount",
                 "VisterCount",
                 "OtherCount"
-              ];
+              ],
+              TodayCountPrev = that.TodayCount,
+              YesterdayCountPrev = that.YesterdayCount,
+              CurrentMonthCountPrev = that.CurrentMonthCount,
+              AllCountPrev = that.AllCount;
+
             that.TodayCount = result.TodayCount;
             that.YesterdayCount = result.YesterdayCount;
             that.CurrentMonthCount = result.CurrentMonthCount;
@@ -868,6 +891,24 @@ export default {
               item.value = result.UserInOutStatistics[type[index]];
             });
             that.drawUser();
+
+            let count31 = new Count(),
+              count32 = new Count(),
+              count33 = new Count(),
+              count34 = new Count();
+
+            count31.init(TodayCountPrev, that.TodayCount, function(value) {
+              that.TodayCount = value;
+            });
+            count32.init(YesterdayCountPrev, that.YesterdayCount, function(value) {
+              that.YesterdayCount = value;
+            });
+            count33.init(CurrentMonthCountPrev, that.CurrentMonthCount, function(value) {
+              that.CurrentMonthCount = value;
+            });
+            count34.init(AllCountPrev, that.AllCount, function(value) {
+              that.AllCount = value;
+            });
           }
         })
         .catch(function(err) {
