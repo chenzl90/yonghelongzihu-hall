@@ -72,7 +72,8 @@
         totalNumberCar: 0,
         parkingSpace: 0,
         shops: 102,
-        rooms: 1800
+        rooms: 1800,
+        count:{}
       }
     },
     mounted: function () {
@@ -80,16 +81,15 @@
     },
     watch: {
       '$root.parkingSpace': function (value) {
-        let count1 = new CountUp(this.$refs.parkingSpace, 0,3200 - value[0],0,2);
-        let count2 = new CountUp(this.$refs.totalNumberCar, 0, value[0],0,2);
-        count1.start();
-        count2.start();
+        let count=this.count;
+        count.parkingSpace.update(3200 - value[0]);
+        count.totalNumberCar.update(value[0]);
       }
     },
     methods: {
       init: function () {
         let that = this;
-        this.count();
+        this.counter();
         this.$nextTick().then(function () {
           that.addElevators();
           that.addFloorsState();
@@ -112,15 +112,16 @@
         });
         floorState.setTempreture();
       },
-      count: function () {
-        let count1 = new CountUp(this.$refs.totalNumber, 0,this.totalNumber,0,2);
-        //let count2 = new CountUp(this.$refs.totalNumberCar, 0,this.totalNumberCar,0,2);
-        let count3 = new CountUp(this.$refs.rooms, 0, this.rooms,0,2);
-        let count4 = new CountUp(this.$refs.shops, 0, this.shops,0,2);
-        count1.start();
-        //count2.start();
-        count3.start();
-        count4.start();
+      counter: function () {
+        let count=this.count;
+        count.totalNumber = new CountUp(this.$refs.totalNumber, 0,this.totalNumber,0,2);
+        count.totalNumberCar= new CountUp(this.$refs.totalNumberCar, 0,0,0,2);
+        count.rooms = new CountUp(this.$refs.rooms, 0, this.rooms,0,2);
+        count.shops = new CountUp(this.$refs.shops, 0, this.shops,0,2);
+        count.parkingSpace = new CountUp(this.$refs.parkingSpace, 0,0,0,2);
+        for(let i in count){
+          count[i]&&count[i].start();
+        }
       }
     }
   }
