@@ -193,10 +193,10 @@ export default {
   data() {
     return {
       // 收费
-      LastMonthTotalAmount: 200000,
-      LastMonthFeeRate: 52,
-      YearTotalAmount: 342000320,
-      YearFeeRate: 20,
+      LastMonthTotalAmount: 1,
+      LastMonthFeeRate: 1,
+      YearTotalAmount: 1,
+      YearFeeRate: 1,
       fee: {
         x: ["7月", "8月", "9月", "10月", "11月", "12月"],
         list: [
@@ -690,25 +690,56 @@ export default {
             });
             monthFee.push(tempList);
 
-            that.LastMonthTotalAmount = result.LastMonthTotalAmount;
+            if (typeof that.LastMonthTotalAmount == "string") {
+              that.LastMonthTotalAmount = parseInt(
+                that.LastMonthTotalAmount.split(",").join("")
+              );
+            }
+            if (typeof that.LastMonthFeeRate == "string") {
+              that.LastMonthFeeRate = parseInt(
+                that.LastMonthFeeRate.split(",").join("")
+              );
+            }
+            if (typeof that.YearTotalAmount == "string") {
+              that.YearTotalAmount = parseInt(
+                that.YearTotalAmount.split(",").join("")
+              );
+            }
+            if (typeof that.YearFeeRate == "string") {
+              that.YearFeeRate = parseInt(that.YearFeeRate.split(",").join(""));
+            }
+            let LastMonthTotalAmountPrev = that.LastMonthTotalAmount,
+              LastMonthFeeRatePrev = that.LastMonthFeeRate,
+              YearTotalAmountPrev = that.YearTotalAmount,
+              YearFeeRatePrev = that.YearFeeRate;
+            that.LastMonthTotalAmount = Math.round(result.LastMonthTotalAmount);
             let count = new Count();
-            count.init(0, that.LastMonthTotalAmount, function(value, beauty) {
-              that.LastMonthTotalAmount = beauty;
-            });
+            count.init(
+              LastMonthTotalAmountPrev,
+              that.LastMonthTotalAmount,
+              function(value, beauty) {
+                that.LastMonthTotalAmount = value;
+              }
+            );
 
             that.LastMonthFeeRate = Math.ceil(result.LastMonthFeeRate * 100);
             let count1 = new Count();
-            count1.init(0, that.LastMonthFeeRate, function(value) {
+            count1.init(LastMonthFeeRatePrev, that.LastMonthFeeRate, function(
+              value
+            ) {
               that.LastMonthFeeRate = value;
             });
-            that.YearTotalAmount = result.YearTotalAmount;
+            that.YearTotalAmount = Math.round(result.YearTotalAmount);
             let count2 = new Count();
-            count2.init(0, that.YearTotalAmount, function(value, beauty) {
-              that.YearTotalAmount = beauty;
+            count2.init(YearTotalAmountPrev, that.YearTotalAmount, function(
+              value,
+              beauty
+            ) {
+              that.YearTotalAmount = value;
             });
             that.YearFeeRate = Math.ceil(result.YearFeeRate * 100);
             let count3 = new Count();
-            count3.init(0, that.YearFeeRate, function(value) {
+            count3.init(YearFeeRatePrev, that.YearFeeRate, function(value) {
               that.YearFeeRate = value;
             });
             that.feeOption.xAxis.data = month;
@@ -845,22 +876,21 @@ export default {
     },
     // 定时更新
     refresh() {
-      let hour = 60 * 60 * 1000,
-        minute = 60 * 1000,
+      let minute = 60 * 1000,
         currentIndex = 1,
         startIndex = 0;
       //
       setInterval(() => {
         this.getFee();
-      }, hour);
-      //
-      setInterval(() => {
         this.getSecurity();
         this.getRepair();
         this.getOrder();
+      }, minute * 5);
+      //
+      setInterval(() => {
         this.getVistor();
         this.getPark();
-      }, minute * 3);
+      }, minute);
       // 闸机情况统计
       setInterval(() => {
         let maxIndex = Math.ceil(that.DeviceStatistics.length / 4);
@@ -885,17 +915,20 @@ export default {
         if (typeof that.incomeToday == "string") {
           that.incomeToday = parseInt(that.incomeToday.split(",").join(""));
         }
+        let incomeTotalPrev = that.incomeTotal,
+          incomeTodayPrev = that.incomeToday;
+
         that.incomeToday =
           that.incomeToday < 10000 ? that.incomeToday + currentIncome : 2000;
         that.incomeTotal =
           that.incomeTotal < 100000 ? that.incomeTotal + currentIncome : 30000;
 
-          count11.init(2000,that.incomeTotal,function(value,beauty){
-            that.incomeTotal = beauty;
-          });
-          count12.init(200,that.incomeToday,function(value,beauty){
-            that.incomeToday = beauty;
-          });
+        count11.init(incomeTotalPrev, that.incomeTotal, function(value) {
+          that.incomeTotal = value;
+        });
+        count12.init(incomeTodayPrev, that.incomeToday, function(value) {
+          that.incomeToday = value;
+        });
       }, 10 * 1000);
     }
   }

@@ -1,7 +1,7 @@
 const config={
     start:0,
     count:0,
-    time:1000,
+    time:3000,
     cycle:100
 };
 function Count(option){
