@@ -5,13 +5,13 @@
       <span style="margin-right:30px;font-size:48px;color:#0febff;">52%</span>入住<br>
       <span style="margin-right:30px;font-size:48px;color:#126be7;">48%</span>空置
     </span>
-    <span class="room-total">房间数<br><span style="font-size:35px;">12,000个</span></span>
+    <span class="room-total">房间数<br><span style="font-size:35px;">{{rooms}}个</span></span>
     <!--商铺数及入住率-->
     <span class="room-occupancy" style="top:1263px;left:147px;">
       <span style="margin-right:30px;font-size:48px;color:#0febff;">52%</span>入住<br>
       <span style="margin-right:30px;font-size:48px;color:#126be7;">48%</span>空置
     </span>
-    <span class="room-total" style="top:1098px;">商铺数<br><span style="font-size:35px;">12,000个</span></span>
+    <span class="room-total" style="top:1098px;">商铺数<br><span style="font-size:35px;">{{shops}}个</span></span>
     <!--人口统计-->
     <span style="position:absolute;left:2726px;top:392px;font-size:27px;color:#fff;">
       总人数<span style="margin-left:30px;font-size:50px;color:#0febff;">{{totalNumber}}</span><br>
@@ -69,7 +69,9 @@
         remainParkingSpaceLoading:true,
         totalNumber:36000000,
         totalNumberCar:123200,
-        parkingSpace:0
+        parkingSpace:0,
+        shops:12000,
+        rooms:12000
       }
     },
     mounted: function () {
@@ -113,13 +115,21 @@
       count:function(){
         let count=new Count();
         let count2=new Count();
+        let count3=new Count();
+        let count4=new Count();
         let that=this;
         count.init(0,this.totalNumber,function(value,beauty){
           that.totalNumber=beauty;
-        })
+        });
         count2.init(0,this.totalNumberCar,function(value,beauty){
           that.totalNumberCar=beauty;
-        })
+        });
+        count3.init(0,this.rooms,function(value,beauty){
+          that.rooms=beauty;
+        });
+        count4.init(0,this.shops,function(value,beauty){
+          that.shops=beauty;
+        });
       }
     }
   }
