@@ -113,12 +113,18 @@
         floorState.setTempreture();
       },
       counter: function () {
-        let count=this.count;
+        let  options = {
+          useEasing: true,
+          useGrouping: true,
+          separator: "",
+          decimal: "."
+        },
+        count=this.count;
         count.totalNumber = new CountUp(this.$refs.totalNumber, 0,this.totalNumber,0,2);
         count.totalNumberCar= new CountUp(this.$refs.totalNumberCar, 0,0,0,2);
         count.rooms = new CountUp(this.$refs.rooms, 0, this.rooms,0,2);
         count.shops = new CountUp(this.$refs.shops, 0, this.shops,0,2);
-        count.parkingSpace = new CountUp(this.$refs.parkingSpace, 0,0,0,2);
+        count.parkingSpace = new CountUp(this.$refs.parkingSpace, 0,0,0,2,options);
         for(let i in count){
           count[i]&&count[i].start();
         }

@@ -186,7 +186,7 @@
 </template>
 
 <script>
-import CountUp from '@/js/count-up.js'
+import CountUp from "@/js/count-up.js";
 let that = null;
 export default {
   name: "left-side",
@@ -580,12 +580,14 @@ export default {
             ]
           }
         ]
-      }
+      },
+      // 数字
+      numCount: {}
     };
   },
   mounted() {
     that = this;
-
+    this.numInit();
     this.getFee();
     this.drawFee();
     this.drawSecurity();
@@ -602,6 +604,127 @@ export default {
     this.refresh();
   },
   methods: {
+    // 数字初始化
+    numInit() {
+      // 收费
+      let options = {
+          useEasing: true,
+          useGrouping: true,
+          separator: "",
+          decimal: "."
+        },
+        numCount = this.numCount;
+      numCount.count11 = new CountUp(
+        this.$refs.LastMonthTotalAmount,
+        0,
+        this.LastMonthTotalAmount,
+        0,
+        2,
+        options
+      );
+      numCount.count12 = new CountUp(
+        this.$refs.LastMonthFeeRate,
+        0,
+        this.LastMonthFeeRate,
+        0,
+        2,
+        options
+      );
+      numCount.count13 = new CountUp(
+        this.$refs.YearTotalAmount,
+        0,
+        this.YearTotalAmount,
+        0,
+        2,
+        options
+      );
+      numCount.count14 = new CountUp(
+        this.$refs.YearFeeRate,
+        0,
+        this.YearFeeRate,
+        0,
+        2,
+        options
+      );
+      // 停车
+      numCount.count31 = new CountUp(
+        this.$refs.incomeTotal,
+        0,
+        this.incomeTotal,
+        0,
+        2,
+        options
+      );
+      numCount.count32 = new CountUp(
+        this.$refs.incomeToday,
+        0,
+        this.incomeToday,
+        0,
+        2,
+        options
+      );
+      numCount.count33 = new CountUp(
+        this.$refs.parkleftedNum,
+        0,
+        this.parkleftedNum,
+        0,
+        2,
+        options
+      );
+      numCount.count34 = new CountUp(
+        this.$refs.flowNumToday,
+        0,
+        this.flowNumToday,
+        0,
+        2,
+        options
+      );
+      numCount.count35 = new CountUp(
+        this.$refs.flowNumAverage,
+        0,
+        this.flowNumAverage,
+        0,
+        2,
+        options
+      );
+      // 访客
+      numCount.count41 = new CountUp(
+        this.$refs.TodayCount,
+        0,
+        this.TodayCount,
+        0,
+        2,
+        options
+      );
+      numCount.count42 = new CountUp(
+        this.$refs.YesterdayCount,
+        0,
+        this.YesterdayCount,
+        0,
+        2,
+        options
+      );
+      numCount.count43 = new CountUp(
+        this.$refs.CurrentMonthCount,
+        0,
+        this.CurrentMonthCount
+      );
+      numCount.count44 = new CountUp(this.$refs.AllCount, 0, this.AllCount,0,2,options);
+
+      numCount.count11.start();
+      numCount.count12.start();
+      numCount.count13.start();
+      numCount.count14.start();
+      numCount.count31.start();
+      numCount.count32.start();
+      numCount.count33.start();
+      numCount.count34.start();
+      numCount.count35.start();
+      numCount.count41.start();
+      numCount.count42.start();
+      numCount.count43.start();
+      numCount.count44.start();
+    },
     // 月度收费统计折线图
     drawFee() {
       let LineGraph = this.$echarts.init(
@@ -690,62 +813,18 @@ export default {
             });
             monthFee.push(tempList);
 
-            if (typeof that.LastMonthTotalAmount == "string") {
-              that.LastMonthTotalAmount = parseInt(
-                that.LastMonthTotalAmount.split(",").join("")
-              );
-            }
-            if (typeof that.LastMonthFeeRate == "string") {
-              that.LastMonthFeeRate = parseInt(
-                that.LastMonthFeeRate.split(",").join("")
-              );
-            }
-            if (typeof that.YearTotalAmount == "string") {
-              that.YearTotalAmount = parseInt(
-                that.YearTotalAmount.split(",").join("")
-              );
-            }
-            if (typeof that.YearFeeRate == "string") {
-              that.YearFeeRate = parseInt(that.YearFeeRate.split(",").join(""));
-            }
-            let LastMonthTotalAmountPrev = that.LastMonthTotalAmount,
-              LastMonthFeeRatePrev = that.LastMonthFeeRate,
-              YearTotalAmountPrev = that.YearTotalAmount,
-              YearFeeRatePrev = that.YearFeeRate;
             that.LastMonthTotalAmount = Math.round(result.LastMonthTotalAmount);
-            let count = new Count();
-            count.init(
-              LastMonthTotalAmountPrev,
-              that.LastMonthTotalAmount,
-              function(value, beauty) {
-                that.LastMonthTotalAmount = value;
-              }
-            );
-
             that.LastMonthFeeRate = Math.ceil(result.LastMonthFeeRate * 100);
-            let count1 = new Count();
-            count1.init(LastMonthFeeRatePrev, that.LastMonthFeeRate, function(
-              value
-            ) {
-              that.LastMonthFeeRate = value;
-            });
             that.YearTotalAmount = Math.round(result.YearTotalAmount);
-            let count2 = new Count();
-            count2.init(YearTotalAmountPrev, that.YearTotalAmount, function(
-              value,
-              beauty
-            ) {
-              that.YearTotalAmount = value;
-            });
             that.YearFeeRate = Math.ceil(result.YearFeeRate * 100);
-            let count3 = new Count();
-            count3.init(YearFeeRatePrev, that.YearFeeRate, function(value) {
-              that.YearFeeRate = value;
-            });
             that.feeOption.xAxis.data = month;
             that.feeOption.series.forEach(function(item, index) {
               item.data = monthFee[index];
             });
+            that.numCount.count11.update(that.LastMonthTotalAmount);
+            that.numCount.count12.update(that.LastMonthFeeRate);
+            that.numCount.count13.update(that.YearTotalAmount);
+            that.numCount.count14.update(that.YearFeeRate);
             that.drawFee();
           }
         })
@@ -823,10 +902,7 @@ export default {
         .then(function(res) {
           let resData = res.data;
           if (resData.Code === 10000) {
-            let result = resData.Data,
-              parkNumPrev = that.parkNum,
-              flowNumTodayPrev = that.flowNumToday,
-              flowNumAveragePrev = that.flowNumAverage;
+            let result = resData.Data;
 
             that.$root.parkingSpace = result;
             that.parkNum = result[0];
@@ -838,20 +914,10 @@ export default {
             that.flowRateAverage = Math.ceil((result[2] / 10000) * 100) + "%";
             that.parkOption.series[0].data[0].value = that.parkRate;
             that.drawPark();
-            let count21 = new Count(),
-              count22 = new Count(),
-              count23 = new Count();
-            count21.init(parkNumPrev, that.parkNum, function(value) {
-              that.parkNum = value;
-            });
-            count22.init(flowNumTodayPrev, that.flowNumToday, function(value) {
-              that.flowNumToday = value;
-            });
-            count23.init(flowNumAveragePrev, that.flowNumAverage, function(
-              value
-            ) {
-              that.flowNumAverage = value;
-            });
+
+            that.numCount.count33.update(that.parkleftedNum);
+            that.numCount.count34.update(that.flowNumToday);
+            that.numCount.count35.update(that.flowNumAverage);
           }
         })
         .catch(function(err) {
@@ -872,11 +938,7 @@ export default {
                 "ShopCount",
                 "VisterCount",
                 "OtherCount"
-              ],
-              TodayCountPrev = that.TodayCount,
-              YesterdayCountPrev = that.YesterdayCount,
-              CurrentMonthCountPrev = that.CurrentMonthCount,
-              AllCountPrev = that.AllCount;
+              ];
 
             that.TodayCount = result.TodayCount;
             that.YesterdayCount = result.YesterdayCount;
@@ -891,24 +953,10 @@ export default {
               item.value = result.UserInOutStatistics[type[index]];
             });
             that.drawUser();
-
-            let count31 = new Count(),
-              count32 = new Count(),
-              count33 = new Count(),
-              count34 = new Count();
-
-            count31.init(TodayCountPrev, that.TodayCount, function(value) {
-              that.TodayCount = value;
-            });
-            count32.init(YesterdayCountPrev, that.YesterdayCount, function(value) {
-              that.YesterdayCount = value;
-            });
-            count33.init(CurrentMonthCountPrev, that.CurrentMonthCount, function(value) {
-              that.CurrentMonthCount = value;
-            });
-            count34.init(AllCountPrev, that.AllCount, function(value) {
-              that.AllCount = value;
-            });
+            that.numCount.count41.update(that.TodayCount);
+            that.numCount.count42.update(that.YesterdayCount);
+            that.numCount.count43.update(that.CurrentMonthCount);
+            that.numCount.count44.update(that.AllCount);
           }
         })
         .catch(function(err) {
@@ -944,32 +992,16 @@ export default {
       }, 10 * 1000);
 
       // 车位收入假数据
-      let count11 = new Count(),
-        count12 = new Count();
-
       setInterval(() => {
-        let currentDay = new Date(),
-          currentIncome = Math.floor(Math.random() * 10);
-        if (typeof that.incomeTotal == "string") {
-          that.incomeTotal = parseInt(that.incomeTotal.split(",").join(""));
-        }
-        if (typeof that.incomeToday == "string") {
-          that.incomeToday = parseInt(that.incomeToday.split(",").join(""));
-        }
-        let incomeTotalPrev = that.incomeTotal,
-          incomeTodayPrev = that.incomeToday;
+        let currentIncome = Math.floor(Math.random() * 10);
 
         that.incomeToday =
           that.incomeToday < 10000 ? that.incomeToday + currentIncome : 2000;
         that.incomeTotal =
           that.incomeTotal < 100000 ? that.incomeTotal + currentIncome : 30000;
 
-        count11.init(incomeTotalPrev, that.incomeTotal, function(value) {
-          that.incomeTotal = value;
-        });
-        count12.init(incomeTodayPrev, that.incomeToday, function(value) {
-          that.incomeToday = value;
-        });
+        that.numCount.count31.update(that.incomeTotal);
+        that.numCount.count32.update(that.incomeToday);
       }, 10 * 1000);
     }
   }
