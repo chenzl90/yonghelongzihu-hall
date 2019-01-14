@@ -290,7 +290,27 @@ const powerConsumeStatisticsTime={
             name:'强电设备',
             type:'line',
             stack: '总量',
-            data:[100, 132, 101, 134, 90, 230, 210,101, 134]
+            data:[100, 132, 101, 134, 90, 230, 210,101, 134],
+            areaStyle: {
+                color: {
+                  type: "linear",
+                  x: 0,
+                  y: 0,
+                  x2: 0,
+                  y2: 1,
+                  colorStops: [
+                    {
+                      offset: 0,
+                      color: "rgba(125,159,250,1)"
+                    },
+                    {
+                      offset: 1,
+                      color: "rgba(255,255,255,0)"
+                    }
+                  ],
+                  globalCoord: false
+                }
+              }
         }
     ]
 };
